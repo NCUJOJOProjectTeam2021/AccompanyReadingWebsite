@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User
-from .form import UserChangeForm, UserCreateForm
+from .forms import UserChangeForm, UserCreateForm
 # Register your models here.
 
 
