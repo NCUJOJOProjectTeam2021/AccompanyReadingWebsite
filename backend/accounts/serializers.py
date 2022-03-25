@@ -12,6 +12,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
 
+    username = serializers.CharField(
+        required=True,
+    )
+
     password1 = serializers.CharField(
         write_only=True,
         required=True,
@@ -24,7 +28,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2')
+        fields = ('email', 'username', 'password1', 'password2')
 
     def validate(self, attrs):
         if attrs['password1'] != attrs['password2']:
@@ -35,41 +39,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(
             email=validated_data['email'],
+            username=validated_data['username'],
             password=validated_data['password1']
         )
         user.save()
         return user
-
-
-# class LoginSerializer(serializers.ModelSerializer):
-#     email = serializers.EmailField(required=True)
-#     password = serializers.CharField(write_only=True, required=True)
-#     username = serializers.CharField(read_only=True)
-#     tokens = serializers.SerializerMethodField()
-
-#     def get_tokens(self, obj):
-#         user = User.objects.get(email=obj['email'])
-
-#         return {
-#             'refresh': user.tokens()['refresh'],
-#             'access': user.tokens()['access']
-#         }
-
-#     class Meta:
-#         model = User
-#         fields = ['email', 'password', 'username', 'tokens']
-
-#     def validate(self, attrs):
-#         email = attrs['email']
-#         password = attrs['password']
-#         user = auth.authenticate(email=email, password=password)
-
-#         if not user:
-#             raise AuthenticationFailed('Invalid credentials, try again')
-#         if not user.is_active:
-#             raise AuthenticationFailed('Account disabled, contact admin')
-
-#         return {
-#             'email': user.email,
-#             'tokens': user.tokens
-#         }
