@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .serializers import ForumSerializer
+from .serializers import ForumSerializer, ThreadSerializer
 from rest_framework import viewsets
 # Create your views here.
 
@@ -8,6 +8,12 @@ from rest_framework import viewsets
 class ForumView(viewsets.ModelViewSet):
     serializer_class = ForumSerializer
     queryset = Post.objects.all()
+
+
+class ThreadView(viewsets.ModelViewSet):
+    serializer_class = ThreadSerializer
+    queryset = Reply.objects.all()
+
 
 # ----------------------------------------------------------------------
 # If the request is not POST, It would only return a adding page,

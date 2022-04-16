@@ -4,7 +4,8 @@ import './index.css';
 import Forum from './pages/forum'
 import CreatePost from './pages/createPostPage'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
-import Thread from './pages/thread';
+import PostPage from './pages/postPage';
+import AddThread from './pages/addThread'
 
 
 
@@ -12,9 +13,9 @@ ReactDOM.render(
   <Router>
     <Routes>
       <Route path="/forum" element={<Forum />} exact />
-      <Route path="/forum/:id" element={<Thread />} />
+      <Route path="/forum/:id" element={<PostPage />} />
+      <Route path="/forum/:id/add-comment" element={<AddThread />} />
       <Route path="/create-post" element={<CreatePost />} />
-
     </Routes>
   </Router>,
   document.getElementById('root')

@@ -20,9 +20,9 @@ from forum import views
 
 router = routers.DefaultRouter()
 router.register(r'forum', views.ForumView, 'forum')
+router.register(r'thread', views.ThreadView, 'thread')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('forum/', include('forum.urls')),
     path('api/', include(router.urls))
 ]

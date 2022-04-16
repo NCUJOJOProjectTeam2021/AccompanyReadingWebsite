@@ -1,8 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import axios from "../../../global/api/Axios";
 import { useState, useEffect } from 'react';
-import { maxWidth } from '@mui/system';
-import { DeleteForever, AccountCircle } from '@mui/icons-material';
+import { AccountCircle } from '@mui/icons-material';
 // import  from '@mui/icons-material/AccountCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Typography, Avatar, ListItemAvatar, ListItemText, Divider, ListItem, List } from '@mui/material';
@@ -28,12 +27,13 @@ export default function ForumList() {
     }
 
     async function handlePostDelete(forumID) {
-        const res = await axios.delete('api/forum/' + forumID + '/');
+        console.log(forumID);
+        await axios.delete('api/forum/' + forumID + '/');
         fetchData();
     }
 
     function handleThreadPage(forum) {
-        navigate(`/forum/${forum.id}`, { state: forum })
+        navigate(`/forum/${forum.id}`, { state: forum.id })
     }
 
     useEffect(() => {
@@ -44,7 +44,7 @@ export default function ForumList() {
 
     const renderItems = data.map((data, index) => {
         return (
-            <div>
+            <div key={index}>
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>
                         {/* photo */}
@@ -90,7 +90,7 @@ export default function ForumList() {
                                     variant="body1"
                                     color="text.primary"
                                 >
-                                    - {data.Post_content}
+                                    &nbsp; - &nbsp; {data.Post_content}
                                 </Typography>
 
                             </React.Fragment>

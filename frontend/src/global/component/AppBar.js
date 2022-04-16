@@ -10,12 +10,14 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from "react-router-dom";
 
 
 const pages = ['Home', 'Matching', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
+    const nevigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -27,7 +29,7 @@ const ResponsiveAppBar = () => {
     };
 
     const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
+        nevigate('/forum')
     };
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
@@ -67,7 +69,7 @@ const ResponsiveAppBar = () => {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                    <Typography textAlign="center">s</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>

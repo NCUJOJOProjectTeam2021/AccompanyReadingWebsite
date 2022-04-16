@@ -1,55 +1,53 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import { Box, TextField } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import Axios from '../../../global/api/Axios'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 
 
 
-export default function PostForum() {
+export default function Comment(props) {
+    const location = useLocation();
     const [author, setAuthor] = useState("");
-    const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const navigate = useNavigate();
+
+    const forumID = location.state;
 
     const [loading, setLoading] = useState(false);
 
     function authorOnchange(e) {
         setAuthor(e.target.value);
     }
-    function titleOnchange(e) {
-        setTitle(e.target.value);
-    }
     function contentOnchange(e) {
         setContent(e.target.value);
     }
 
 
-    async function submitForm() {
-        const form = {
-            "Post_author": author,
-            "Post_title": title,
-            "Post_content": content
+    async function submitThread() {
+        const thread = {
+            "reply_user": author,
+            "reply_content": content,
+            "reply_post": forumID
         }
         try {
-            await Axios.post("/api/forum/", form);
+            await Axios.post("/api/thread/", thread);
         } catch (err) {
             console.log(err);
         }
     }
     function handleSubmit(e) {
-        submitForm();
+        submitThread();
         setLoading(true);
         //await data to post (may change)
         setTimeout(() => {
-            navigate('/forum');
+            navigate(`/forum/${forumID}`, { state: forumID });
         }, 3000);
-
     }
+
     return (
         <Box
             alignItems="center"
@@ -60,7 +58,7 @@ export default function PostForum() {
                 position: "relative ", top: 8,
             }}
         >   <h1 style={{ fontFamily: "Sans-Serif" }} >
-                Post
+                Comment
             </h1>
 
             <h3 >
@@ -68,13 +66,9 @@ export default function PostForum() {
             </h3>
             <TextField label={'author'} id="Post_author" value={author} onChange={authorOnchange} />
             <h3 >
-                title
-            </h3>
-            <TextField label={'title'} id="Post_title" value={title} onChange={titleOnchange} margin="dense" />
-            <h3 >
                 content
             </h3>
-            <TextField label={'content'} id="Post_content" value={content} onChange={contentOnchange} margin="normal" />
+            <TextField label={'content'} id="reply_content" value={content} onChange={contentOnchange} margin="normal" />
 
 
             <LoadingButton

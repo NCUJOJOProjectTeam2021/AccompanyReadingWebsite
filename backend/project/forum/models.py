@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 
 class Post(models.Model):
@@ -7,11 +8,10 @@ class Post(models.Model):
     # auth... User
     # change to foriengnkey to User after
     Post_author = models.CharField(max_length=30, default="anonymous")
-    # Post_classification = (
-    #     ("Math", "數學"), ("English", "英文"), ("Physical", "物理"))
     Post_title = models.CharField(max_length=30)
     Post_content = models.CharField(max_length=1000)
-    Post_created_date = models.DateTimeField(auto_now=True)
+    Post_created_date = models.DateTimeField(
+        auto_now=datetime.datetime.now().replace(microsecond=0))
 
     def __str__(self):
         return self.Post_title
@@ -22,10 +22,8 @@ class Post(models.Model):
 
 class Reply(models.Model):
     # change to foriengnkey to user after
-    reply_user = models.CharField(max_length=10)
+    reply_post = models.ForeignKey(
+        Post, related_name="threads", on_delete=models.CASCADE, default="")
+    reply_user = models.CharField(max_length=10, default="anonymous")
     # add user image after login
-    post = models.ForeignKey(Post, blank=True, on_delete=models.CASCADE)
-    reply_content = models.CharField(max_length=500)
-
-    def __str__(self):
-        return self.forum
+    reply_content = models.CharField(max_length=500, default="")
