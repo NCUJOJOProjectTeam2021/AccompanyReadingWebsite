@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { getCookie, setCookie } from '../../cookie';
 
 function Copyright(props) {
     return (
@@ -32,10 +33,49 @@ export default function SignIn() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const loginjson = {
+            "email": data.get('email'),
+            "password": data.get('password'),
+        };
+
+        fetch('http://127.0.0.1:8000/auth/login/', {
+            method: 'Post',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify(loginjson)
+        }).then(
+            (res) => {
+                if (res.ok) {
+                    const resbody = res.text();
+                    resbody.then((result) => {
+                        const jwtjson = JSON.parse(result);
+
+                        setCookie('refresh', jwtjson.refresh);
+                        setCookie('access', jwtjson.access);
+
+                        console.log('refresh: ' + getCookie('refresh'));
+                        console.log('access: ' + getCookie('access'));
+
+                        console.log(document.cookie);
+
+                    }).catch(
+                        error => console.log(error)
+                    )
+                }
+                else {
+                    if (res.status === 401) {
+                        alert('unauthorized');
+                    }
+                }
+
+            }
+        ).catch(
+            error => console.log(error)
+        )
     };
 
     return (
@@ -77,10 +117,10 @@ export default function SignIn() {
                             id="password"
                             autoComplete="current-password"
                         />
-                        <FormControlLabel
+                        {/* <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
-                        />
+                        /> */}
                         <Button
                             type="submit"
                             fullWidth
@@ -90,13 +130,13 @@ export default function SignIn() {
                             Sign In
                         </Button>
                         <Grid container>
-                            <Grid item xs>
+                            {/* <Grid item xs>
                                 <Link href="#" variant="body2">
                                     Forgot password?
                                 </Link>
-                            </Grid>
+                            </Grid> */}
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/signup" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

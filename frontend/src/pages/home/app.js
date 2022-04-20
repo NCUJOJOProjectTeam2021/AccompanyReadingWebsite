@@ -1,10 +1,9 @@
-import { Link } from 'react-router-dom'
-
+import { Link } from "react-router-dom";
 
 export default function HomePage(props) {
     return (
         <div>
-            <h1>Home Page</h1>
+            <h1>Hello</h1>
             <div>
                 <ul>
                     <li><Link to="/">Home</Link></li>
@@ -13,5 +12,5 @@ export default function HomePage(props) {
                 </ul>
             </div>
         </div>
-    )
+    );
 };

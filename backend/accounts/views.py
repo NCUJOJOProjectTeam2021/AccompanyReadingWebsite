@@ -1,11 +1,12 @@
 # from urllib import response
 # from django.shortcuts import render
+import email
 from .serializers import RegisterSerializer
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-# from .models import User
+from .models import User
 
 # Create your views here.
 
@@ -22,6 +23,16 @@ class HelloAPIView(APIView):
 
     def get(self, request):
         content = {'message': 'hello'}
+        return Response(data=content, status=status.HTTP_200_OK)
+
+
+class GetUsernameView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user_email = request.user
+        user = User.objects.get(email=user_email)
+        content = {'message': 'hello', 'user': str(user.username)}
         return Response(data=content, status=status.HTTP_200_OK)
 
 

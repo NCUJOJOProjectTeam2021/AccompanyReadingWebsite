@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -32,11 +30,44 @@ export default function SignUp() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+        const jsonData = {
+            "email": data.get('email'),
+            "username": data.get('username'),
+            "password1": data.get('password1'),
+            "password2": data.get('password2'),
+        }
+
+        fetch('http://127.0.0.1:8000/auth/register/', {
+            method: 'Post',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify(jsonData)
+        }).then(
+            //handle response
+            (res) => {
+
+                if (res.ok) {
+                    alert('Sign up successfully');
+                    window.location.replace('/signin');
+                }
+                else {
+                    const resbody = res.text();
+                    resbody.then((result) => {
+                        alert(result);
+                    }).catch(
+                        error => console.log(error)
+                    );
+                }
+            }
+        ).catch(
+            //handle error
+            error => console.log(error)
+        );
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -83,10 +114,10 @@ export default function SignUp() {
                                 <TextField
                                     required
                                     fullWidth
-                                    name="password"
+                                    name="password1"
                                     label="Password"
                                     type="password"
-                                    id="password"
+                                    id="password1"
                                     autoComplete="new-password"
                                 />
                             </Grid>
@@ -96,7 +127,7 @@ export default function SignUp() {
                                     fullWidth
                                     name="password2"
                                     label="Confirmed Password"
-                                    type="password2"
+                                    type="password"
                                     id="password2"
                                     autoComplete="confirmed-password"
                                 />
@@ -113,7 +144,7 @@ export default function SignUp() {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/signin" variant="body2">
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>
