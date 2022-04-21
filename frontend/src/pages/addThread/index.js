@@ -6,7 +6,6 @@ import AppBar from "../../global/component/AppBar"
 const AddThread = () => {
     return (
         <React.Fragment>
-            <AppBar />
             <Comment />
         </React.Fragment>
     )

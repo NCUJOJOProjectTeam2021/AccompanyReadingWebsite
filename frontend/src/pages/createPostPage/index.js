@@ -1,12 +1,11 @@
 import React from "react";
 import PostForum from "./components/PostForum";
-import AppBar from "../../global/component/AppBar"
-
+import Layout from '../../global/component/Layout';
 
 const CreatePost = () => {
     return (
         <React.Fragment>
-            <AppBar />
+            <Layout />
             <PostForum />
         </React.Fragment>
     )

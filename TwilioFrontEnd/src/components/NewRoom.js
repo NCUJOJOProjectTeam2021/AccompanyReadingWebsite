@@ -1,6 +1,11 @@
 import React from 'react';
 import { useGlobalState } from '../API/RoomContextProvider';
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import { Stack } from '@mui/material';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+
 
 
 const NewRoom = () => {
@@ -23,12 +28,19 @@ const NewRoom = () => {
 
     return (
         <div>
-            <input
-                placeholder="Enter room topic..."
-                onChange={e => updateRoomName(e.target.value)}
-            />
-            <button onClick={handleRoomCreate}>
-                Start room</button>
+            <Stack direction="column"
+                justifyContent="center"
+                alignItems="center"
+                spacing={2}>
+
+                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                    <TextField id="topic" label="Enter a room topic." variant="standard" onChange={e => updateRoomName(e.target.value)} />
+                </Box>
+
+                <Button onClick={handleRoomCreate} variant="contained">
+                    Start room
+                </Button>
+            </Stack>
         </div>
     );
 };

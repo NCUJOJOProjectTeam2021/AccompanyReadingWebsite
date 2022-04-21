@@ -1,15 +1,11 @@
 import React from "react";
-import AppBar from "../../global/component/AppBar";
 import ForumList from "./components/Forumlist";
-import Buttons from "./components/Button"
-
-
+import Layout from '../../global/component/Layout';
 
 const Forum = () => {
     return (
         <React.Fragment>
-            <AppBar />
-            <Buttons />
+            <Layout />
             <ForumList />
         </React.Fragment>
     )
