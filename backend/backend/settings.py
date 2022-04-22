@@ -13,6 +13,17 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+
+
+load_dotenv()
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+TWILIO_API_KEY = os.getenv('TWILIO_API_KEY')
+TWILIO_API_SECRET = os.getenv('TWILIO_API_SECRET')
+TWIML_APPLICATION_SID = os.getenv('TWIML_APPLICATION_SID')
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -36,7 +47,10 @@ CORS_ORIGIN_WHITELIST = [
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    ".ngrok.io",
+    "localhost"
+]
 
 
 # Application definition
@@ -51,9 +65,11 @@ INSTALLED_APPS = [
     # my app
     'accounts',
     'forum',
+    'api',
     # Third party modules
     'rest_framework',
     'corsheaders',
+
 
 
 

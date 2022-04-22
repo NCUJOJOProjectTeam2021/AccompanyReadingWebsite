@@ -10,6 +10,7 @@ router.register(r'thread', views.ThreadView, 'thread')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('router/', include(router.urls)),
+    path('api/', include('api.urls')),
     path('auth/', include('accounts.urls')),
 ]
