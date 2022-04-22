@@ -58,7 +58,7 @@ const RoomList = () => {
                                 state.rooms.map((selectedRoom, index) => (
 
                                     <SubItem key={index + 1}>
-                                        <Link to={`/rooms/${index + 1}`} onClick={() => { setState({ ...state, selectedRoom }) }}>{selectedRoom.room_name}</Link>
+                                        <Link to={`/roomsList/${index + 1}`} onClick={() => { setState({ ...state, selectedRoom }) }}>{selectedRoom.room_name}</Link>
                                     </SubItem>
                                 ))
 

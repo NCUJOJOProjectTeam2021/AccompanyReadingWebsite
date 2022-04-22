@@ -14,7 +14,7 @@ const SignupForm = () => {
         e.preventDefault();
         const nickName = state.nickName;
         setupTwillo(nickName);
-        navigate('/rooms');
+        navigate('/roomsList');
     }
     //get the access token
     const setupTwillo = (nickName) => {

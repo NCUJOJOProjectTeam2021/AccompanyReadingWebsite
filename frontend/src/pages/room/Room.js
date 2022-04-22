@@ -43,7 +43,7 @@ const Room = ({ room }) => {
 
     const handleLeaveRoom = () => {
         call.disconnect();
-        nevigate('/rooms');
+        nevigate('/roomsList');
     };
     const handleEndRoom = () => {
         handleLeaveRoom();
