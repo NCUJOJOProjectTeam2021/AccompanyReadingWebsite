@@ -3,7 +3,7 @@ import { Avatar, ListItemAvatar, Button, Typography, ListItem, ListItemText, Div
 import { AccountCircle } from '@mui/icons-material';
 import axios from "../../../global/api/Axios";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import Container from '@mui/material/Container';
 
 
 export default function PostDetail(props) {
@@ -32,6 +32,7 @@ export default function PostDetail(props) {
 
     const renderItems = thread.map((data, index) => {
         return (
+
             <div key={index}>
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>
@@ -75,50 +76,52 @@ export default function PostDetail(props) {
     }, [])
 
     return (
-        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            <ListItem sx={{ top: 30 }} >
-                <ListItemAvatar >
-                    <Avatar sx={{ bgcolor: 'text.primary' }} >
-                        <AccountCircle />
-                    </Avatar>
-                </ListItemAvatar>
-                <Typography
-                    sx={{ display: 'inline', fontWeight: 'bold', top: 10 }}
-                    component="div"
-                    variant="h6"
-                    color="rgba(1,13,133,1)"
-                >
-                    {data.Post_author}
-                </Typography>
+        <Container maxWidth="sm">
+            <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                <ListItem sx={{ top: 30 }} >
+                    <ListItemAvatar >
+                        <Avatar sx={{ bgcolor: 'text.primary' }} >
+                            <AccountCircle />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <Typography
+                        sx={{ display: 'inline', fontWeight: 'bold', top: 10 }}
+                        component="div"
+                        variant="h6"
+                        color="rgba(1,13,133,1)"
+                    >
+                        {data.Post_author}
+                    </Typography>
 
-            </ListItem>
-            <ListItem sx={{ fontWeight: 'bold', left: '60px', top: '20px' }}>
-                <Typography
-                    color="text.secondary"
-                    variant="subtitle1"
-                >
-                    post time:
-                    {data.Post_created_date}
-                </Typography>
-            </ListItem>
-            <Box sx={{ my: 5, mx: 10 }}>
-                <Grid container alignItems="center">
-                    <Grid item xs>
-                        <Typography gutterBottom variant="h4" component="div">
-                            # {data.Post_title}
-                        </Typography>
+                </ListItem>
+                <ListItem sx={{ fontWeight: 'bold', left: '60px', top: '20px' }}>
+                    <Typography
+                        color="text.secondary"
+                        variant="subtitle1"
+                    >
+                        post time:
+                        {data.Post_created_date}
+                    </Typography>
+                </ListItem>
+                <Box sx={{ my: 5, mx: 10 }}>
+                    <Grid container alignItems="center">
+                        <Grid item xs>
+                            <Typography gutterBottom variant="h4" component="div">
+                                # {data.Post_title}
+                            </Typography>
+                        </Grid>
                     </Grid>
-                </Grid>
-                <Typography color="rgba(28,28,28,1)" variant="body1" sx={{ mx: 4 }}>
-                    {data.Post_content}
-                </Typography>
+                    <Typography color="rgba(28,28,28,1)" variant="body1" sx={{ mx: 4 }}>
+                        {data.Post_content}
+                    </Typography>
+                </Box>
+                <Divider variant="middle" />
+                <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
+                    <Button onClick={handleAddComment.bind(this, data.id)}>Add comment</Button>
+                </Box>
+                {renderItems}
             </Box>
-            <Divider variant="middle" />
-            <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-                <Button onClick={handleAddComment.bind(this, data.id)}>Add comment</Button>
-            </Box>
-            {renderItems}
-        </Box>
+        </Container>
     )
 }
 

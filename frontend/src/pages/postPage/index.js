@@ -1,11 +1,11 @@
 import React from "react";
-import AppBar from "../../global/component/AppBar";
-import PostDetail from './component/PostDetail'
+import Layout from "../../global/component/Layout";
+import PostDetail from './component/PostDetail';
 
 const PostPage = () => {
     return (
         <React.Fragment>
-            <AppBar />
+            <Layout />
             <PostDetail />
         </React.Fragment>
     )
