@@ -20,6 +20,7 @@
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
     "styled-components": "^5.3.3",
+    "twilio-video": "^2.21.1",
     "util": "^0.12.4",
     "web-vitals": "^2.1.4"
   },
