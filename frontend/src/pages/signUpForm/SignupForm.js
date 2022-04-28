@@ -3,6 +3,7 @@ import { useGlobalState } from '../../API/RoomContextProvider';
 import { useNavigate } from 'react-router-dom';
 import { Device } from '@twilio/voice-sdk';
 
+
 const SignupForm = () => {
     // useGlobalState return value which is props down by RoomContextProvider
     const navigate = useNavigate();
@@ -14,12 +15,15 @@ const SignupForm = () => {
         e.preventDefault();
         const nickName = state.nickName;
         setupTwillo(nickName);
-        navigate('/rooms');
+        navigate('/roomsList');
     }
     //get the access token
     const setupTwillo = (nickName) => {
         fetch(`/api/token/${nickName}`)
-            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+                return (response.json());
+            })
             .then(data => {
                 console.log(data.token);
                 const twilioToken = data.token;

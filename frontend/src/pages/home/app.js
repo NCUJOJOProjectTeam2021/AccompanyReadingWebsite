@@ -2,6 +2,47 @@ import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { getCookie, setCookie } from "../../cookie";
 
+
+export const getUsername = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + getCookie('access'));
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    const res = fetch("http://127.0.0.1:8000/auth/username/", requestOptions)
+        .then((response) => {
+            return response;
+        })
+        .catch(error => console.log('error', error));
+    return res;
+};
+
+export const refreshToken = () => {
+    var formdata = new FormData();
+    formdata.append("refresh", getCookie('refresh'));
+
+    var requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+    };
+
+    fetch("http://127.0.0.1:8000/auth/login/refresh/", requestOptions)
+        .then(response => response.text())
+        .then((result) => {
+            const json = JSON.parse(result);
+            setCookie('access', json.access);
+            setCookie('refresh', json.refresh);
+        })
+        .catch(error => console.log('error', error));
+}
+
+
+
 export default function HomePage(props) {
 
 

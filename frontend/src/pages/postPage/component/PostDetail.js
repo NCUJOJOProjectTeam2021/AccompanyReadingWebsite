@@ -15,9 +15,8 @@ export default function PostDetail(props) {
 
     async function fetchData() {
         try {
-            const response = await axios.get(`api/forum/${forumID}/`);
+            const response = await axios.get(`api/forum/forum/${forumID}/`);
             let data = await response.data;
-            console.log(data);
             setData(data);
             setThread(data.threads);
 
@@ -117,7 +116,7 @@ export default function PostDetail(props) {
                 </Box>
                 <Divider variant="middle" />
                 <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-                    <Button onClick={handleAddComment.bind(this, data.id)}>Add comment</Button>
+                    <Button variant="contained" onClick={handleAddComment.bind(this, data.id)}>Add comment</Button>
                 </Box>
                 {renderItems}
             </Box>

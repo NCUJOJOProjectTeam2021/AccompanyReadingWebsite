@@ -1,16 +1,15 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom";
+import { List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core'
 import Drawer from '@material-ui/core/Drawer'
 import Typography from '@material-ui/core/Typography'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import Link from '@mui/material/Link';
 import ForumIcon from '@mui/icons-material/Forum';
 import CreateIcon from '@mui/icons-material/Create';
-import { useNavigate } from "react-router-dom";
-
-const drawerWidth = 30
+import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
+import { useGlobalState } from '../../API/RoomContextProvider';
+import { Device } from '@twilio/voice-sdk';
+import { getUsername, refreshToken } from '../../pages/home/app'
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -40,7 +39,8 @@ const useStyles = makeStyles((theme) => {
 export default function Layout() {
     const classes = useStyles()
     const navigate = useNavigate()
-
+    const [nickName, setNickName] = useState();
+    const [state, setState] = useGlobalState();
     const menuItems = [
         {
             text: 'Forum',
@@ -53,6 +53,54 @@ export default function Layout() {
             path: '/create-post'
         },
     ];
+    useEffect(() => {
+        getUsername().then((res) => {
+            if (res.status === 401) {
+                refreshToken();
+            }
+        });
+        getUsername().then((res) => res.json())
+            .then((res) => setNickName(res.user));
+
+    }, [])
+
+    function handleVoiceClick(e) {
+        const setupTwillo = (nickName) => {
+            fetch(`/api/token/${nickName}`)
+                .then(response => {
+                    return (response.json());
+                })
+                .then(data => {
+                    const twilioToken = data.token;
+                    const device = new Device(twilioToken);
+                    device.updateOptions(twilioToken, {
+                        codecPreferences: ['opus', 'pcmu'],
+                        fakeLocalDTMF: true,
+                        maxAverageBitrate: 16000
+                    });
+                    device.on('error', (device) => {
+                        console.log("error: ", device);
+                    });
+                    setState((state) => {
+                        return { ...state, device, twilioToken }
+                    });
+                }).catch((error) => {
+                    console.log(error);
+                })
+        }
+        e.preventDefault();
+        setState({ ...state, nickName });
+        setupTwillo(nickName);
+        setTimeout(() => {
+            navigate('/roomsList');
+        }, 2000);
+        //get the access token
+
+    }
+
+    // const tokenValid = {
+    //     getUsername()
+    // };
 
     return (
         <div className={classes.root}>
@@ -70,7 +118,7 @@ export default function Layout() {
                 </div>
 
                 {/* links/list section */}
-                <List>
+                <List display="flex">
                     {menuItems.map((item) => (
                         <ListItem
                             button
@@ -81,11 +129,24 @@ export default function Layout() {
                             <ListItemText primary={item.text} />
                         </ListItem>
                     ))}
+                    <ListItem button
+                        onClick={handleVoiceClick} >
+                        <ListItemIcon><RecordVoiceOverIcon color="primary" /> </ListItemIcon>
+                        <ListItemText primary='Voice Room' />
+                    </ListItem>
+                    <ListItem justify="flex-end">
+                        {
+                            // tokenValid.status === 401 ? <div></div> :
+                            <Link href="/signin" variant="body2">Login again</Link>
+
+                        }
+                    </ListItem>
                 </List>
+
 
             </Drawer>
 
             {/* main content */}
-        </div>
+        </div >
     )
 }

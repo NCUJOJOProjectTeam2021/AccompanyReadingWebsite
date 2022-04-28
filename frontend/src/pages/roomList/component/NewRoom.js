@@ -23,7 +23,7 @@ const NewRoom = () => {
         const roomId = rooms.push(selectedRoom);
         setState({ ...state, rooms });
         setState({ ...state, selectedRoom });
-        navigate(`/rooms/${roomId}`);
+        navigate(`/roomsList/${roomId}`);
     };
 
     return (

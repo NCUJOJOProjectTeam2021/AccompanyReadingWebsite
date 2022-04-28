@@ -1,26 +1,28 @@
-import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import React, { useEffect, useState } from 'react';
+import { Box, TextField } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import Axios from '../../../global/api/Axios'
 import { useNavigate } from "react-router-dom";
-
-
-
+import { getUsername, refreshToken } from '../../home/app';
 
 
 export default function PostForum() {
-    const [author, setAuthor] = useState("");
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [username, setUsername] = useState();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
 
-    function authorOnchange(e) {
-        setAuthor(e.target.value);
-    }
+    useEffect(() => {
+        getUsername().then((res) => {
+            refreshToken();
+        });
+        getUsername().then((res) => res.json())
+            .then((res) => setUsername(res.user));
+    }, [])
+
     function titleOnchange(e) {
         setTitle(e.target.value);
     }
@@ -31,12 +33,12 @@ export default function PostForum() {
 
     async function submitForm() {
         const form = {
-            "Post_author": author,
+            "Post_author": username,
             "Post_title": title,
             "Post_content": content
         }
         try {
-            await Axios.post("/api/forum/", form);
+            await Axios.post("/api/forum/forum/", form);
         } catch (err) {
             console.log(err);
         }
@@ -57,16 +59,12 @@ export default function PostForum() {
                 display: 'flex',
                 flexDirection: 'column',
                 '& .MuiTextField-root': { width: '60ch' },
-                position: "relative ", top: 8,
+                position: "relative", top: 8,
             }}
-        >   <h1 style={{ fontFamily: "Sans-Serif" }} >
+        >   <h1 style={{ fontFamily: "Segoe UI" }} >
                 Post
             </h1>
 
-            <h3 >
-                author
-            </h3>
-            <TextField label={'author'} id="Post_author" value={author} onChange={authorOnchange} />
             <h3 >
                 title
             </h3>
@@ -78,12 +76,12 @@ export default function PostForum() {
 
 
             <LoadingButton
-                color="secondary"
+                variant="contained"
+                color="primary"
                 onClick={handleSubmit}
                 loading={loading}
                 loadingPosition="start"
                 startIcon={<SaveIcon />}
-                variant="contained"
                 size="large"
                 sx={{
                     top: "10px"
@@ -91,8 +89,6 @@ export default function PostForum() {
             >
                 Save
             </LoadingButton>
-
         </Box>
-
     );
 }
