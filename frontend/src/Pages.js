@@ -12,6 +12,7 @@ import Forum from './pages/forum'
 import CreatePost from './pages/createPostPage'
 import PostPage from './pages/postPage';
 import AddThread from './pages/addThread'
+import { ScreenSharing } from './pages/screenshare/App';
 
 
 
@@ -32,6 +33,8 @@ const Pages = () => {
                 <Route path={'/roomsList/:roomId'} element={room ? <Room room={room} /> : null} />
                 <Route path='/roomsList' element={state.twilioToken ? <RoomList /> : <SignupForm />} />
                 <Route path='/hello' element={<SignupForm />} />
+
+                <Route path='/screenshare' element={<ScreenSharing />} />
 
                 <Route path="/forum" element={<Forum />} exact />
                 <Route path="/forum/:id" element={<PostPage />} />

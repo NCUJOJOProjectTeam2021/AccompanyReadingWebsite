@@ -1,7 +1,7 @@
 async function getRoomCredentials(username) {
-    const response = await fetch('https://localhost:8000/api/token/' + username);
+    const response = await fetch('http://localhost:8000/api/token/' + username);
     const token = await response.text();
-    return { username, token };
+    return token;
 }
 
 export { getRoomCredentials };
