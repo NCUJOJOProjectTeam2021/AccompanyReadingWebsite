@@ -55,7 +55,7 @@ class TokenView(View):
         )
 
         video_grant = grants.VideoGrant(
-            room='video'
+            room='screenshare'
         )
 
         access_token = AccessToken(
