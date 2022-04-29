@@ -49,6 +49,7 @@ export default function HomePage(props) {
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/signin">Sign In</Link></li>
                     <li><Link to="/signup">Sign Up</Link></li>
+                    <li><Link to="/screenshare">ScreenSharing</Link></li>
                 </ul>
             </div>
             <Button onClick={handleSubmit}>access</Button>

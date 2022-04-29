@@ -34,12 +34,26 @@ const ScreenSharing = () => {
         const localParticipant = room.localParticipant;
         console.log(`connect to the room as localparticipant ${localParticipant.identity}`);
 
-        room.once('participantConnected', participant => {
+        room.on('participantConnected', participant => {
             console.log(`a remote participant connected: ${participant.identity}`);
+
+            participant.tracks.forEach(publication => {
+                if (publication.isSubscribed) {
+                    const track = publication.track;
+                    document.getElementById('remoteshare').appendChild(track.attach());
+                }
+            });
+
+            participant.on('trackSubscribed', track => {
+                document.getElementById('remoteshare').appendChild(track.attach());
+            });
+
         });
-        room.once('participantDisconnected', participant => {
+
+        room.on('participantDisconnected', participant => {
             console.log(`a remote participant disconnect: ${participant.identity}`);
         });
+
         setRoom(room);
     }
 
@@ -60,6 +74,7 @@ const ScreenSharing = () => {
                 });
 
                 participant.on('trackSubscribed', track => {
+                    console.log('someone shared');
                     document.getElementById('remoteshare').appendChild(track.attach());
                 });
             });
