@@ -6,17 +6,18 @@ import { AccountCircle } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Typography, Avatar, ListItemAvatar, ListItemText, Divider, ListItem, List } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-
+import { getUsername, refreshToken } from '../../home/app';
 
 
 
 export default function ForumList() {
 
     const [data, setData] = useState([]);
+    const [username, setUsername] = useState();
     const navigate = useNavigate();
     async function fetchData() {
         try {
-            const response = await axios.get("api/forum/");
+            const response = await axios.get("api/forum/forum/");
             const data = await response.data;
             const revData = data.reverse()
             setData(revData);
@@ -28,7 +29,7 @@ export default function ForumList() {
 
     async function handlePostDelete(forumID) {
         console.log(forumID);
-        await axios.delete('api/forum/' + forumID + '/');
+        await axios.delete('api/forum/forum/' + forumID + '/');
         fetchData();
     }
 
@@ -37,7 +38,13 @@ export default function ForumList() {
     }
 
     useEffect(() => {
-        fetchData()
+        fetchData();
+        getUsername().then((res) => {
+            refreshToken();
+            // setUsername(res.json());
+        })
+        getUsername().then((res) => res.json())
+            .then((res) => setUsername(res.user));
     }, [])
 
 
@@ -66,10 +73,14 @@ export default function ForumList() {
                                     </Typography>
                                 </Button>
                                 <div style={{ display: 'flex' }}>
-                                    <Button variant="outlined" startIcon={<DeleteIcon />} size="small"
-                                        onClick={handlePostDelete.bind(this, data.id)} sx={{ color: 'rgba(240,0, 40, 0.8)' }} >
-                                        Delete
-                                    </Button>
+                                    {
+                                        username === data.Post_author ?
+                                            <Button variant="outlined" startIcon={<DeleteIcon color="error" />} size="small"
+                                                onClick={handlePostDelete.bind(this, data.id)} >
+                                                Delete
+                                            </Button> :
+                                            <div></div>
+                                    }
                                 </div>
                             </React.Fragment>
 

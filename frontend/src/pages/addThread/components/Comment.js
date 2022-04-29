@@ -1,40 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, TextField } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import Axios from '../../../global/api/Axios'
 import { useNavigate, useLocation } from "react-router-dom";
-
-
-
+import { getUsername, refreshToken } from '../../home/app';
 
 
 export default function Comment(props) {
     const location = useLocation();
-    const [author, setAuthor] = useState("");
+    const [username, setUsername] = useState();
     const [content, setContent] = useState("");
     const navigate = useNavigate();
 
     const forumID = location.state;
-
     const [loading, setLoading] = useState(false);
 
-    function authorOnchange(e) {
-        setAuthor(e.target.value);
-    }
     function contentOnchange(e) {
         setContent(e.target.value);
     }
-
+    useEffect(() => {
+        getUsername().then((res) => {
+            refreshToken();
+        })
+        getUsername().then((res) => res.json())
+            .then((res) => setUsername(res.user));
+    }, [])
 
     async function submitThread() {
         const thread = {
-            "reply_user": author,
+            "reply_user": username,
             "reply_content": content,
             "reply_post": forumID
         }
         try {
-            await Axios.post("/api/thread/", thread);
+            await Axios.post("/api/forum/thread/", thread);
         } catch (err) {
             console.log(err);
         }
@@ -61,10 +61,6 @@ export default function Comment(props) {
                 Comment
             </h1>
 
-            <h3 >
-                author
-            </h3>
-            <TextField label={'author'} id="Post_author" value={author} onChange={authorOnchange} />
             <h3 >
                 content
             </h3>

@@ -1,7 +1,5 @@
 import { useCallback } from "react";
 
-// gets the rooms in rooms:[]
-
 export const useFetchRooms = (url) => {
     const fetchRooms = useCallback(() => {
         return new Promise((resolve, reject) => {

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useGlobalState } from '../../API/RoomContextProvider';
 import { useFetchRooms } from '../../API/Hook';
 import { styled, Stack, Paper, Grid, Box } from '@mui/material';
+import { getUsername, refreshToken } from '../home/app';
 
 
 
@@ -19,7 +20,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 const SubItem = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
@@ -36,10 +36,12 @@ const RoomList = () => {
                 return { ...state, rooms };
             });
         })
+        getUsername().then((res) => {
+            refreshToken();
+        })
     }, [fetchRooms, setState]);
 
     return (
-
         <Box
             sx={{
                 width: "99vw",
@@ -51,7 +53,7 @@ const RoomList = () => {
             <Grid container spacing={2} >
                 <Grid item xs={6} >
                     <Item >
-                        <Stack spacing={10}>
+                        <Stack spacing={2}>
                             <h1>Available rooms...</h1>
 
                             {(state.rooms.length > 0) ?
@@ -73,6 +75,9 @@ const RoomList = () => {
                         <Stack spacing={10}>
                             <h2>Enter a room topic to start a new room ...</h2>
                             <NewRoom />
+                            <Link to={"/forum"} variant="body2">
+                                {"Back to forum"}
+                            </Link>
                         </Stack>
                     </Item>
                 </Grid>
