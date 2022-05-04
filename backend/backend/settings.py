@@ -22,7 +22,9 @@ TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
 TWILIO_API_KEY = os.getenv('TWILIO_API_KEY')
 TWILIO_API_SECRET = os.getenv('TWILIO_API_SECRET')
 TWIML_APPLICATION_SID = os.getenv('TWIML_APPLICATION_SID')
-
+TWILIO_WBAPI_KEY = os.getenv('TWILIO_WBAPI_KEY')
+TWILIO_WBAPI_SECRET = os.getenv('TWILIO_WBAPI_SECRET')
+TWILIO_SYNC_SERVICE_SID = os.getenv('TWILIO_SYNC_SERVICE_SID')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production

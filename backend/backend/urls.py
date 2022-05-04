@@ -13,4 +13,5 @@ urlpatterns = [
     path('api/forum/', include(router.urls)),
     path('api/', include('api.urls')),
     path('auth/', include('accounts.urls')),
+    path('whiteboard/', include('whiteboard.urls')),
 ]

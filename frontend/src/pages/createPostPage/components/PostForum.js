@@ -16,9 +16,7 @@ export default function PostForum() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        getUsername().then((res) => {
-            refreshToken();
-        });
+        refreshToken();
         getUsername().then((res) => res.json())
             .then((res) => setUsername(res.user));
     }, [])

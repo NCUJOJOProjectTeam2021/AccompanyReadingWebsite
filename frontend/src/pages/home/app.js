@@ -34,6 +34,7 @@ export const refreshToken = () => {
     fetch("http://127.0.0.1:8000/auth/login/refresh/", requestOptions)
         .then(response => response.text())
         .then((result) => {
+            console.log(result);
             const json = JSON.parse(result);
             setCookie('access', json.access);
             setCookie('refresh', json.refresh);
@@ -84,10 +85,9 @@ export default function HomePage(props) {
 
     return (
         <div>
-            <h1>Hello</h1>
+            <h1>Welcome</h1>
             <div>
                 <ul>
-                    <li><Link to="/">Home</Link></li>
                     <li><Link to="/signin">Sign In</Link></li>
                     <li><Link to="/signup">Sign Up</Link></li>
                 </ul>

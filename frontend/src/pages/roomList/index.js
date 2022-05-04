@@ -36,9 +36,7 @@ const RoomList = () => {
                 return { ...state, rooms };
             });
         })
-        getUsername().then((res) => {
-            refreshToken();
-        })
+        refreshToken();
     }, [fetchRooms, setState]);
 
     return (

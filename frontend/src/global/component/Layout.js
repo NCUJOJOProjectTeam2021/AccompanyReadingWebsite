@@ -54,11 +54,7 @@ export default function Layout() {
         },
     ];
     useEffect(() => {
-        getUsername().then((res) => {
-            if (res.status === 401) {
-                refreshToken();
-            }
-        });
+        refreshToken();
         getUsername().then((res) => res.json())
             .then((res) => setNickName(res.user));
 

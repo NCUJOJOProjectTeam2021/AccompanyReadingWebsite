@@ -8,6 +8,7 @@ import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CloseIcon from '@mui/icons-material/Close';
+import NewWindow from 'react-new-window'
 
 // a room in rooms
 const Item = styled(Paper)(({ theme }) => ({
@@ -47,7 +48,8 @@ const Room = ({ room }) => {
     const fetchRooms = useFetchRooms('/api/rooms');
 
     useEffect(() => {
-        // pass parameters to POST
+        // pass parameters to POST 
+        refreshToken();
         const params = {
             roomName: roomName, participantLabel: nickName
         };
@@ -61,13 +63,6 @@ const Room = ({ room }) => {
             room.participants.push(nickName);
             console.log(nickName);
         }
-        getUsername().then((res) => {
-            if (res.status === 401) {
-                refreshToken();
-                console.log("aa");
-            }
-            // setUsername(res.json());
-        });
     }, [device, roomName, nickName, room, call]);
 
     const handleLeaveRoom = () => {
@@ -88,6 +83,10 @@ const Room = ({ room }) => {
                     setState({ ...state, selectedRoom });
                 }
             });
+    }
+    const handleWhiteboard = () => {
+        // nevigate(`/roomsList/${roomName}/whiteboard`);
+        window.open(`/roomsList/${roomName}/whiteboard`, 'width=600,height=400,left=200,top=200');
     }
 
     return (
@@ -142,7 +141,7 @@ const Room = ({ room }) => {
                         </Stack>
                         <Stack alignItems="flex-end">
                             <Box padding="0 3%">
-                                <Button variant="contained">Whiteboard</Button>
+                                <Button onClick={handleWhiteboard} variant="contained">Whiteboard</Button>
                             </Box>
                         </Stack>
                     </ScreenContainer>

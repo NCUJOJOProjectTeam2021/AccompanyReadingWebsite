@@ -39,10 +39,7 @@ export default function ForumList() {
 
     useEffect(() => {
         fetchData();
-        getUsername().then((res) => {
-            refreshToken();
-            // setUsername(res.json());
-        })
+        refreshToken();
         getUsername().then((res) => res.json())
             .then((res) => setUsername(res.user));
     }, [])
