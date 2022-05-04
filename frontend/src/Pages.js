@@ -27,6 +27,9 @@ const Pages = () => {
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path={'/roomsList/:roomId'} element={room ? <Room room={room} /> : null} />
+
+                <Route path='/screenshare' element={<ScreenSharing />} />
+
                 <Route path='/roomsList' element={state.twilioToken ? <RoomList /> : <Navigate to={"/forum"} />} />
                 <Route path="/forum" element={<Forum />} exact />
                 <Route path="/forum/:id" element={<PostPage />} />
