@@ -5,20 +5,20 @@ import SaveIcon from '@mui/icons-material/Save';
 import Axios from '../../../global/api/Axios'
 import { useNavigate } from "react-router-dom";
 import { getUsername, refreshToken } from '../../home/app';
+import { useGlobalState } from '../../../global/api/ContextProvider';
 
 
 export default function PostForum() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [username, setUsername] = useState();
+    const [state] = useGlobalState();
+    const { username } = state;
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         refreshToken();
-        getUsername().then((res) => res.json())
-            .then((res) => setUsername(res.user));
     }, [])
 
     function titleOnchange(e) {

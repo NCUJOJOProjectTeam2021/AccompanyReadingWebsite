@@ -7,7 +7,7 @@ import Link from '@mui/material/Link';
 import ForumIcon from '@mui/icons-material/Forum';
 import CreateIcon from '@mui/icons-material/Create';
 import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
-import { useGlobalState } from '../../API/RoomContextProvider';
+import { useGlobalState } from '../../global/api/ContextProvider';
 import { Device } from '@twilio/voice-sdk';
 import { getUsername, refreshToken } from '../../pages/home/app'
 
@@ -39,8 +39,10 @@ const useStyles = makeStyles((theme) => {
 export default function Layout() {
     const classes = useStyles()
     const navigate = useNavigate()
-    const [nickName, setNickName] = useState();
     const [state, setState] = useGlobalState();
+    const { username } = state;
+
+
     const menuItems = [
         {
             text: 'Forum',
@@ -55,14 +57,11 @@ export default function Layout() {
     ];
     useEffect(() => {
         refreshToken();
-        getUsername().then((res) => res.json())
-            .then((res) => setNickName(res.user));
-
     }, [])
 
     function handleVoiceClick(e) {
-        const setupTwillo = (nickName) => {
-            fetch(`/api/token/${nickName}`)
+        const setupTwillo = (username) => {
+            fetch(`/api/token/${username}`)
                 .then(response => {
                     return (response.json());
                 })
@@ -85,8 +84,7 @@ export default function Layout() {
                 })
         }
         e.preventDefault();
-        setState({ ...state, nickName });
-        setupTwillo(nickName);
+        setupTwillo(username);
         setTimeout(() => {
             navigate('/roomsList');
         }, 2000);

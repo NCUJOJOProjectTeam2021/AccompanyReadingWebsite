@@ -105,7 +105,7 @@ export default function PostDetail(props) {
                 <Box sx={{ my: 5, mx: 10 }}>
                     <Grid container alignItems="center">
                         <Grid item xs>
-                            <Typography gutterBottom variant="h4" component="div">
+                            <Typography gutterBottom variant="h4" component="div" sx={{ overflow: 'hidden', wordWrap: 'break-word' }}>
                                 # {data.Post_title}
                             </Typography>
                         </Grid>

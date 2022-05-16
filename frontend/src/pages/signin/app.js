@@ -10,7 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getCookie, setCookie } from '../../cookie';
+import { getCookie, setCookie } from '../../global/api/cookie';
 import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
@@ -38,7 +38,7 @@ export default function SignIn() {
             "password": data.get('password'),
         };
 
-        fetch('http://127.0.0.1:8000/auth/login/', {
+        fetch('auth/login/', {
             method: 'Post',
             mode: 'cors',
             headers: {
@@ -58,12 +58,8 @@ export default function SignIn() {
                         setCookie('access', jwtjson.access);
 
                         // console.log('refresh: ' + getCookie('refresh'));
-                        // console.log('access: ' + getCookie('access'));
-
-                        console.log(document.cookie);
+                        // console.log('access: ' + getCookie('access')
                         navigate('/forum');
-
-
                     }).catch(
                         error => console.log(error)
                     )

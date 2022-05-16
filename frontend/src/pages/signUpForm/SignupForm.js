@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGlobalState } from '../../API/RoomContextProvider';
+import { useGlobalState } from '../../global/api/RoomContextProvider';
 import { useNavigate } from 'react-router-dom';
 import { Device } from '@twilio/voice-sdk';
 

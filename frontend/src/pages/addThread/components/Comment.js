@@ -4,13 +4,15 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import Axios from '../../../global/api/Axios'
 import { useNavigate, useLocation } from "react-router-dom";
-import { getUsername, refreshToken } from '../../home/app';
+import { refreshToken } from '../../home/app';
+import { useGlobalState } from '../../../global/api/ContextProvider';
 
 
 export default function Comment(props) {
     const location = useLocation();
-    const [username, setUsername] = useState();
+    const [state, setState] = useGlobalState();
     const [content, setContent] = useState("");
+    const { username } = state;
     const navigate = useNavigate();
 
     const forumID = location.state;
@@ -20,11 +22,7 @@ export default function Comment(props) {
         setContent(e.target.value);
     }
     useEffect(() => {
-        getUsername().then((res) => {
-            refreshToken();
-        })
-        getUsername().then((res) => res.json())
-            .then((res) => setUsername(res.user));
+        refreshToken();
     }, [])
 
     async function submitThread() {

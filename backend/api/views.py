@@ -53,11 +53,6 @@ class TokenView(View):
             outgoing_application_sid=settings.TWIML_APPLICATION_SID,
             incoming_allow=True,
         )
-
-        video_grant = grants.VideoGrant(
-            room='video'
-        )
-
         access_token = AccessToken(
             settings.TWILIO_ACCOUNT_SID,
             settings.TWILIO_API_KEY,
@@ -66,7 +61,6 @@ class TokenView(View):
         )
 
         access_token.add_grant(voice_grant)
-        access_token.add_grant(video_grant)
         jwt_token = access_token.to_jwt()
         # take away decode
         return JsonResponse({"token": jwt_token.encode().decode("utf-8")})

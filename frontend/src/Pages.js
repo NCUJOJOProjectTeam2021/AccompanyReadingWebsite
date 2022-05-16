@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import RoomList from './pages/roomList';
 import Room from './pages/room/Room';
-import { useGlobalState } from './API/RoomContextProvider'
+import { useGlobalState } from './global/api/ContextProvider'
 import HomePage from './pages/home/app';
 import SignIn from './pages/signin/app';
 import SignUp from './pages/signup/app';
@@ -22,16 +22,13 @@ const Pages = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Navigate replace to="/signin" />} />
+                <Route path="/" element={<Navigate replace to="/signin" />} exact />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path={'/roomsList/:roomId'} element={room ? <Room room={room} /> : null} />
-
-                <Route path='/screenshare' element={<ScreenSharing />} />
-
                 <Route path='/roomsList' element={state.twilioToken ? <RoomList /> : <Navigate to={"/forum"} />} />
-                <Route path="/forum" element={<Forum />} exact />
+                <Route path="/forum" element={<Forum />} />
                 <Route path="/forum/:id" element={<PostPage />} />
                 <Route path="/forum/:id/add-comment" element={<AddThread />} />
                 <Route path="/create-post" element={<CreatePost />} />

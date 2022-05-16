@@ -7,13 +7,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Typography, Avatar, ListItemAvatar, ListItemText, Divider, ListItem, List } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { getUsername, refreshToken } from '../../home/app';
+import { useGlobalState } from '../../../global/api/ContextProvider';
 
 
 
 export default function ForumList() {
 
     const [data, setData] = useState([]);
-    const [username, setUsername] = useState();
+    const [state, setState] = useGlobalState();
     const navigate = useNavigate();
     async function fetchData() {
         try {
@@ -41,8 +42,11 @@ export default function ForumList() {
         fetchData();
         refreshToken();
         getUsername().then((res) => res.json())
-            .then((res) => setUsername(res.user));
+            .then((res) => {
+                setState({ ...state, username: res.user });
+            });
     }, [])
+    const { username } = state;
 
 
 
@@ -93,7 +97,7 @@ export default function ForumList() {
                                     {data.Post_author}
                                 </Typography>
                                 <Typography
-                                    sx={{ display: 'inline' }}
+                                    sx={{ display: 'inline', overflow: 'hidden', wordWrap: 'break-word' }}
                                     component="span"
                                     variant="body1"
                                     color="text.primary"

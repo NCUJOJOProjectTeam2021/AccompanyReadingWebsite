@@ -32,7 +32,7 @@ class GetUsernameView(APIView):
     def get(self, request):
         user_email = request.user
         user = User.objects.get(email=user_email)
-        content = {'username': str(user.username)}
+        content = {'message': 'hello', 'user': str(user.username)}
         return Response(data=content, status=status.HTTP_200_OK)
 
 

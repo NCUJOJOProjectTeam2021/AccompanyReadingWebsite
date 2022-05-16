@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import NewRoom from './component/NewRoom';
 import { Link } from 'react-router-dom';
-import { useGlobalState } from '../../API/RoomContextProvider';
-import { useFetchRooms } from '../../API/Hook';
+import { useGlobalState } from '../../global/api/ContextProvider';
+import { useFetchRooms } from '../../global/api/Hook';
 import { styled, Stack, Paper, Grid, Box } from '@mui/material';
 import { getUsername, refreshToken } from '../home/app';
+import BasicPagination from '../../global/component/BasicPagination'
 
 
 
@@ -16,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
     margin: "10%",
     borderRadius: "5%",
-    height: "55vh",
+    height: "70vh",
 }));
 const SubItem = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -42,8 +43,8 @@ const RoomList = () => {
     return (
         <Box
             sx={{
-                width: "99vw",
-                height: "99vh",
+                width: "100vw",
+                height: "100vh",
                 backgroundColor: 'primary.dark',
                 margin: "0px",
             }}>
@@ -62,8 +63,10 @@ const RoomList = () => {
                                     </SubItem>
                                 ))
 
-                                : <h3>No room available now ...<br />
+                                :
+                                < h3 > No room available now ...<br />
                                     Create a new room to get started</h3>
+
                             }
                         </Stack>
                     </Item>

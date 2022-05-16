@@ -11,7 +11,7 @@ class Post(models.Model):
     Post_title = models.CharField(max_length=30)
     Post_content = models.CharField(max_length=1000)
     Post_created_date = models.DateTimeField(
-        auto_now=datetime.datetime.now().replace(microsecond=0))
+        auto_now=True)
 
     def __str__(self):
         return self.Post_title

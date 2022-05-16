@@ -1,14 +1,14 @@
 import React from 'react';
 import Pages from './Pages';
-import { RoomContextProvider } from './API/RoomContextProvider';
+import { ContextProvider } from './global/api/ContextProvider';
 
 const App = () => {
   return (
-    <RoomContextProvider>
+    <ContextProvider>
       <div>
         <Pages />
       </div>
-    </RoomContextProvider>
+    </ContextProvider>
   );
 };
 

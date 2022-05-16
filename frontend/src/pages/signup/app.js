@@ -37,7 +37,7 @@ export default function SignUp() {
             "password2": data.get('password2'),
         }
 
-        fetch('http://127.0.0.1:8000/auth/register/', {
+        fetch('auth/register/', {
             method: 'Post',
             mode: 'cors',
             headers: {

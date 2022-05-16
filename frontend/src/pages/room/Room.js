@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGlobalState } from '../../API/RoomContextProvider';
-import { useFetchRooms } from '../../API/Hook';
+import { useGlobalState } from '../../global/api/ContextProvider';
+import { useFetchRooms } from '../../global/api/Hook';
 import { styled, Stack, Paper, Grid, Box, Button, ButtonGroup } from '@mui/material';
 import { getUsername, refreshToken } from '../home/app';
 import ScreenShareIcon from '@mui/icons-material/ScreenShare';
@@ -43,7 +43,7 @@ const Room = ({ room }) => {
     const nevigate = useNavigate();
     const [state, setState] = useGlobalState();
     const [call, setCall] = useState();
-    const { device, nickName } = state;
+    const { device, username } = state;
     const roomName = room.room_name;
     const fetchRooms = useFetchRooms('/api/rooms');
 
@@ -51,7 +51,7 @@ const Room = ({ room }) => {
         // pass parameters to POST 
         refreshToken();
         const params = {
-            roomName: roomName, participantLabel: nickName
+            roomName: roomName, participantLabel: username
         };
         if (!call) {
             const callPromise = device.connect({ params });
@@ -59,11 +59,11 @@ const Room = ({ room }) => {
                 setCall(call);
             });
         }
-        if (!room.participants.includes(nickName)) {
-            room.participants.push(nickName);
-            console.log(nickName);
+        if (!room.participants.includes(username)) {
+            room.participants.push(username);
+            console.log(username);
         }
-    }, [device, roomName, nickName, room, call]);
+    }, [device, roomName, username, room, call]);
 
     const handleLeaveRoom = () => {
         call.disconnect();
@@ -111,7 +111,7 @@ const Room = ({ room }) => {
                             <ul>
                                 {
                                     room.participants.map((participant, index) => (
-                                        participant === nickName ? <li key={index}><em>{participant}</em></li> : <li key={index}>{participant}</li>
+                                        participant === username ? <li key={index}><em>{participant}</em></li> : <li key={index}>{participant}</li>
                                     ))
                                 }
                             </ul>
