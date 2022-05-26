@@ -12,6 +12,7 @@ import CreatePost from './pages/createPostPage'
 import PostPage from './pages/postPage';
 import AddThread from './pages/addThread'
 import WhiteBoardHTML from './pages/whiteBoard/component/WhiteBoardHTML';
+import { ScreenSharing } from './pages/screenshare/App'
 
 
 
@@ -33,6 +34,7 @@ const Pages = () => {
                 <Route path="/forum/:id/add-comment" element={<AddThread />} />
                 <Route path="/create-post" element={<CreatePost />} />
                 <Route path={'/roomsList/:roomId/whiteboard'} element={<WhiteBoardHTML />} />
+                <Route path="/screenshare" element={<ScreenSharing />} />
             </Routes>
         </Router>
     );
