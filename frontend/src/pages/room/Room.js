@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalState } from '../../global/api/ContextProvider';
 import { useFetchRooms } from '../../global/api/Hook';
-import { styled, Stack, Paper, Grid, Box, Button, ButtonGroup } from '@mui/material';
-import { getUsername, refreshToken } from '../home/app';
+import { styled, Stack, Paper, Grid, Box, Button } from '@mui/material';
+import { refreshToken } from '../../global/api/getToken';
 import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CloseIcon from '@mui/icons-material/Close';
-import NewWindow from 'react-new-window'
+
 
 // a room in rooms
 const Item = styled(Paper)(({ theme }) => ({

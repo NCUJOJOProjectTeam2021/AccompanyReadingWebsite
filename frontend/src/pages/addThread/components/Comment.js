@@ -4,7 +4,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import Axios from '../../../global/api/Axios'
 import { useNavigate, useLocation } from "react-router-dom";
-import { refreshToken } from '../../home/app';
+import { refreshToken } from '../../../global/api/getToken';
 import { useGlobalState } from '../../../global/api/ContextProvider';
 
 
@@ -21,9 +21,6 @@ export default function Comment(props) {
     function contentOnchange(e) {
         setContent(e.target.value);
     }
-    useEffect(() => {
-        refreshToken();
-    }, [])
 
     async function submitThread() {
         const thread = {
@@ -32,7 +29,7 @@ export default function Comment(props) {
             "reply_post": forumID
         }
         try {
-            await Axios.post("/api/forum/thread/", thread);
+            await Axios.post("api/forum/thread/", thread);
         } catch (err) {
             console.log(err);
         }

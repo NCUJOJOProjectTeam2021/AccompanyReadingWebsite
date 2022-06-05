@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AddThread from './pages/addThread'
 import { ThemeProvider } from '@material-ui/core'
 import { theme } from './global/api/theme'
 import App from './App'

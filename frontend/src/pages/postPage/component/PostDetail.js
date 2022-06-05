@@ -26,7 +26,7 @@ export default function PostDetail(props) {
     }
 
     function handleAddComment(postID) {
-        navigate(`/forum/${postID}/add-comment`, { state: postID });
+        navigate(`/forum/${postID}/comment`, { state: postID });
     }
 
     const renderItems = thread.map((data, index) => {

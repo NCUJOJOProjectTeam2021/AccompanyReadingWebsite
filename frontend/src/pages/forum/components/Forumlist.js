@@ -6,7 +6,7 @@ import { AccountCircle } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Typography, Avatar, ListItemAvatar, ListItemText, Divider, ListItem, List } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import { getUsername, refreshToken } from '../../home/app';
+import { getUsername, refreshToken } from '../../../global/api/getToken';
 import { useGlobalState } from '../../../global/api/ContextProvider';
 
 

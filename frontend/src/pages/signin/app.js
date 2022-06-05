@@ -12,6 +12,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCookie, setCookie } from '../../global/api/cookie';
 import { useNavigate } from "react-router-dom";
+import Cookies from 'universal-cookie';
+
+
 
 function Copyright(props) {
     return (
@@ -29,6 +32,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
+    const cookies = new Cookies();
     const navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -54,11 +58,12 @@ export default function SignIn() {
                     resbody.then((result) => {
                         const jwtjson = JSON.parse(result);
 
-                        setCookie('refresh', jwtjson.refresh);
-                        setCookie('access', jwtjson.access);
+                        cookies.set('loginToken', true);
+                        setCookie('refreshTok', jwtjson.refresh, { path: '/', expires: 50 * 365 });
+                        setCookie('accessTok', jwtjson.access, { path: '/', expires: 50 * 365 });
 
                         // console.log('refresh: ' + getCookie('refresh'));
-                        // console.log('access: ' + getCookie('access')
+                        // console.log('access: ' + getCookie('access'));
                         navigate('/forum');
                     }).catch(
                         error => console.log(error)

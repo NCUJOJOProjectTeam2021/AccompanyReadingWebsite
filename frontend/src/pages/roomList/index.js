@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { useGlobalState } from '../../global/api/ContextProvider';
 import { useFetchRooms } from '../../global/api/Hook';
 import { styled, Stack, Paper, Grid, Box } from '@mui/material';
-import { getUsername, refreshToken } from '../home/app';
-import BasicPagination from '../../global/component/BasicPagination'
+import { getUsername, refreshToken } from '../../global/api/getToken';
 
 
 
@@ -29,6 +28,8 @@ const SubItem = styled(Paper)(({ theme }) => ({
 const RoomList = () => {
     const [state, setState] = useGlobalState();
     const fetchRooms = useFetchRooms('/api/rooms');
+    // const { twilioToken, username } = state;
+
 
 
     useEffect(() => {
@@ -37,6 +38,11 @@ const RoomList = () => {
                 return { ...state, rooms };
             });
         })
+        getUsername().then((res) => res.json())
+            .then((res) => {
+                setState({ ...state, username: res.user });
+                console.log(res.user);
+            });
         refreshToken();
     }, [fetchRooms, setState]);
 
