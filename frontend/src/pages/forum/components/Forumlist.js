@@ -1,14 +1,29 @@
 import React from 'react';
-import axios from "../../../global/api/Axios";
+import Axios from '../../../global/api/Axios';
 import { useState, useEffect } from 'react';
-import { AccountCircle } from '@mui/icons-material';
-// import  from '@mui/icons-material/AccountCircle';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, Typography, Avatar, ListItemAvatar, ListItemText, Divider, ListItem, List } from '@mui/material';
+
 import { useNavigate } from "react-router-dom";
 import { getUsername, refreshToken } from '../../../global/api/getToken';
 import { useGlobalState } from '../../../global/api/ContextProvider';
 
+
+import { Link as RouterLink } from 'react-router-dom';
+// material
+import { Button, Typography, Grid, Container, Stack } from '@mui/material';
+// components
+import Page from '../../../temp/Page';
+import Iconify from '../../../temp/Iconify';
+import { BlogPostCard } from '../../../temp/dashboard';
+import getTwilioToken from '../../../global/api/getTwilioToken';
+// mock
+
+// ----------------------------------------------------------------------
+
+// const SORT_OPTIONS = [
+//     { value: 'latest', label: 'Latest' },
+//     { value: 'popular', label: 'Popular' },
+//     { value: 'oldest', label: 'Oldest' },
+// ];
 
 
 export default function ForumList() {
@@ -18,7 +33,7 @@ export default function ForumList() {
     const navigate = useNavigate();
     async function fetchData() {
         try {
-            const response = await axios.get("api/forum/forum/");
+            const response = await Axios.get("api/forum/forum/");
             const data = await response.data;
             const revData = data.reverse()
             setData(revData);
@@ -30,12 +45,8 @@ export default function ForumList() {
 
     async function handlePostDelete(forumID) {
         console.log(forumID);
-        await axios.delete('api/forum/forum/' + forumID + '/');
+        await Axios.delete('api/forum/forum/' + forumID + '/');
         fetchData();
-    }
-
-    function handleThreadPage(forum) {
-        navigate(`/forum/${forum.id}`, { state: forum.id })
     }
 
     useEffect(() => {
@@ -43,81 +54,38 @@ export default function ForumList() {
         refreshToken();
         getUsername().then((res) => res.json())
             .then((res) => {
+                console.log(res.user);
                 setState({ ...state, username: res.user });
+                return res.user;
+            }).then((username) => {
+                console.log(username);
+                getTwilioToken(username)
             });
     }, [])
-    const { username } = state;
-
-
-
-    const renderItems = data.map((data, index) => {
-        return (
-            <div key={index}>
-                <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                        {/* photo */}
-                        <Avatar sx={{ bgcolor: 'text.primary' }} >
-                            <AccountCircle />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={
-                            <React.Fragment>
-                                <Button onClick={handleThreadPage.bind(this, data)}>
-                                    <Typography
-                                        sx={{ display: 'inline', fontWeight: 'bold' }}
-                                        component="div"
-                                        variant="h6"
-                                        color="rgba(1,13,133,1)"
-                                    >
-                                        {data.Post_title}
-                                    </Typography>
-                                </Button>
-                                <div style={{ display: 'flex' }}>
-                                    {
-                                        username === data.Post_author ?
-                                            <Button variant="outlined" startIcon={<DeleteIcon color="error" />} size="small"
-                                                onClick={handlePostDelete.bind(this, data.id)} >
-                                                Delete
-                                            </Button> :
-                                            <div></div>
-                                    }
-                                </div>
-                            </React.Fragment>
-
-                        }
-                        secondary={
-                            <React.Fragment>
-                                <Typography
-                                    sx={{ display: 'inline' }}
-                                    component="span"
-                                    variant="subtitle1"
-                                    color="rgba(128,128,128,1)"
-                                >
-                                    {data.Post_author}
-                                </Typography>
-                                <Typography
-                                    sx={{ display: 'inline', overflow: 'hidden', wordWrap: 'break-word' }}
-                                    component="span"
-                                    variant="body1"
-                                    color="text.primary"
-                                >
-                                    &nbsp; - &nbsp; {data.Post_content}
-                                </Typography>
-
-                            </React.Fragment>
-                        }
-                    //Post time {data.Post_created_date}
-                    />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-            </div >
-        )
-    })
 
     return (
-        <List sx={{ width: '100%', maxWidth: "69%", bgcolor: 'background.paper', position: "relative", left: "15%", top: "50px", border: 7, }}>
-            {renderItems}
-        </List>
+        <Page title="Dashboard: Blog">
+            <Container>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                    <Typography variant="h4" gutterBottom>
+                        Blog
+                    </Typography>
+                    <Button variant="contained" component={RouterLink} to="/forum/create" startIcon={<Iconify icon="eva:plus-fill" />}>
+                        New Post
+                    </Button>
+                </Stack>
+
+                {/* <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
+          <BlogPostsSearch posts={POSTS} />
+          <BlogPostsSort options={SORT_OPTIONS} />
+        </Stack> */}
+
+                <Grid container spacing={3}>
+                    {data.map((post, index) => (
+                        <BlogPostCard key={post.id} post={post} index={index} />
+                    ))}
+                </Grid>
+            </Container>
+        </Page>
     );
 }

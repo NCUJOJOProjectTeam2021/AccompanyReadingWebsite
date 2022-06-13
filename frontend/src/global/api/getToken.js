@@ -35,8 +35,8 @@ export const refreshToken = () => {
         .then((result) => {
             console.log(result);
             const json = JSON.parse(result);
-            setCookie('accessTok2', json.access);
-            setCookie('refreshTok2', json.refresh);
+            setCookie('accessTok', json.access);
+            setCookie('refreshTok', json.refresh);
         })
         .catch(error => console.log('error', error));
 }

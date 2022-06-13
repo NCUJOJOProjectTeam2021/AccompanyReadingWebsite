@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core'
 import Drawer from '@material-ui/core/Drawer'
 import Typography from '@material-ui/core/Typography'
@@ -12,7 +12,6 @@ import { Device } from '@twilio/voice-sdk';
 import { getUsername, refreshToken } from '../api/getToken'
 import Cookies from 'universal-cookie';
 import { setCookie } from '../api/cookie';
-
 const useStyles = makeStyles((theme) => {
     return {
         page: {
@@ -142,8 +141,9 @@ export default function Layout() {
 
 
             </Drawer>
-
+            <Outlet />
             {/* main content */}
         </div >
+
     )
 }

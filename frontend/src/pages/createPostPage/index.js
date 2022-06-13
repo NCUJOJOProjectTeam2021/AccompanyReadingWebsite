@@ -5,7 +5,6 @@ import Layout from '../../global/component/Layout';
 const CreatePost = () => {
     return (
         <React.Fragment>
-            <Layout />
             <PostForum />
         </React.Fragment>
     )

@@ -3,7 +3,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Button, Typography, Container, Box } from '@mui/material';
 // components
-import illustration_404 from './static/illustration_404.svg';
 
 
 // ----------------------------------------------------------------------
@@ -37,11 +36,11 @@ export default function Page404() {
                     <Box
                         component="img"
                         alt="The house from the offer."
-                        src={illustration_404}
+                        src="/static/illustrations/illustration_404.svg"
                         sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
                     />
 
-                    <Button to="/" size="large" variant="contained" component={RouterLink}>
+                    <Button to="/forum" size="large" variant="contained" component={RouterLink}>
                         Go to Home
                     </Button>
                 </ContentStyle>

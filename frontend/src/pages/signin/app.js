@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCookie, setCookie } from '../../global/api/cookie';
 import { useNavigate } from "react-router-dom";
 import Cookies from 'universal-cookie';
+import GetTwilioToken from '../../global/api/getTwilioToken';
 
 
 
@@ -61,7 +62,6 @@ export default function SignIn() {
                         cookies.set('loginToken', true);
                         setCookie('refreshTok', jwtjson.refresh, { path: '/', expires: 50 * 365 });
                         setCookie('accessTok', jwtjson.access, { path: '/', expires: 50 * 365 });
-
                         // console.log('refresh: ' + getCookie('refresh'));
                         // console.log('access: ' + getCookie('access'));
                         navigate('/forum');
