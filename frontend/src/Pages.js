@@ -11,6 +11,7 @@ import CreatePost from './pages/createPostPage'
 import PostPage from './pages/postPage';
 import AddThread from './pages/addThread'
 import WhiteBoardHTML from './pages/whiteBoard/component/WhiteBoardHTML';
+import { ScreenSharing } from './pages/screenshare/App'
 import Page404 from './pages/page404';
 import { getCookie } from './global/api/cookie';
 import ProtectedRoute from './global/component/ProtectedRoute'
@@ -38,6 +39,14 @@ const Pages = () => {
 
                 {/* other */}
                 <Route path="/signup" element={<SignUp />} />
+                <Route path={'/roomsList/:roomId'} element={room ? <Room room={room} /> : null} />
+                <Route path='/roomsList' element={state.twilioToken ? <RoomList /> : <Navigate to={"/forum"} />} />
+                <Route path="/forum" element={<Forum />} />
+                <Route path="/forum/:id" element={<PostPage />} />
+                <Route path="/forum/:id/add-comment" element={<AddThread />} />
+                <Route path="/create-post" element={<CreatePost />} />
+                <Route path={'/roomsList/:roomId/whiteboard'} element={<WhiteBoardHTML />} />
+                <Route path="/screenshare" element={<ScreenSharing />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/404" element={<Page404 />} />
                 <Route path="/" element={<Navigate replace to="/signin" />} />

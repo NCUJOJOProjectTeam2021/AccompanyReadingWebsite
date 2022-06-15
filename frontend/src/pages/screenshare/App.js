@@ -40,12 +40,18 @@ const ScreenSharing = () => {
             participant.tracks.forEach(publication => {
                 if (publication.isSubscribed) {
                     const track = publication.track;
-                    document.getElementById('remoteshare').appendChild(track.attach());
+                    // document.getElementById('remoteshare').appendChild(track.attach());
+                    /*Todo: 重寫成attach到screenpreview*/
+                    const screen = document.getElementById('screenpreview');
+                    track.attach(screen);
                 }
             });
 
             participant.on('trackSubscribed', track => {
-                document.getElementById('remoteshare').appendChild(track.attach());
+                // document.getElementById('remoteshare').appendChild(track.attach());
+                /*Todo: 重寫成attach到screenpreview*/
+                const screen = document.getElementById('screenpreview');
+                track.attach(screen);
             });
 
         });
@@ -69,13 +75,24 @@ const ScreenSharing = () => {
             room.participants.forEach(participant => {
                 participant.tracks.forEach(publication => {
                     if (publication.track) {
-                        document.getElementById('remoteshare').appendChild(publication.track.attach());
+                        // document.getElementById('remoteshare').appendChild(publication.track.attach());
+                        /*Todo: 重寫成attach到screenpreview*/
+                        const screen = document.getElementById('screenpreview');
+                        publication.track.attach(screen);
                     }
                 });
 
                 participant.on('trackSubscribed', track => {
                     console.log('someone shared');
-                    document.getElementById('remoteshare').appendChild(track.attach());
+                    // document.getElementById('remoteshare').appendChild(track.attach());
+                    /*Todo: 重寫成attach到screenpreview*/
+                    /*Disattach 本地的東西 */
+                    const screen = document.getElementById('screenpreview');
+                    track.attach(screen);
+
+                    if (screenTrack) {
+                        handleStop();
+                    }
                 });
             });
         }
