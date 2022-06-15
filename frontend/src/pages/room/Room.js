@@ -9,6 +9,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CloseIcon from '@mui/icons-material/Close';
 import NewWindow from 'react-new-window'
+import { ScreenSharing } from '../screenshare/App';
 
 // a room in rooms
 const Item = styled(Paper)(({ theme }) => ({
@@ -137,7 +138,8 @@ const Room = ({ room }) => {
                 <Grid item xs={8} >
                     <ScreenContainer>
                         <Stack sx={{ height: '90%' }} justifyContent="center" alignItems="center">
-                            <Screen></Screen>
+                            {/* <Screen></Screen> */}
+                            <ScreenSharing />
                         </Stack>
                         <Stack alignItems="flex-end">
                             <Box padding="0 3%">
