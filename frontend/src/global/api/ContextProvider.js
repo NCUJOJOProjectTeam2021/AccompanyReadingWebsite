@@ -5,7 +5,7 @@ const initialState = {
     selectedRoom: null,
     rooms: [],
     createRoomTopic: '',
-    twilloToken: '',
+    twilioToken: '',
     device: null
 };
 const Context = createContext(null);

@@ -4,7 +4,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import Axios from '../../../global/api/Axios'
 import { useNavigate } from "react-router-dom";
-import { getUsername, refreshToken } from '../../home/app';
 import { useGlobalState } from '../../../global/api/ContextProvider';
 
 
@@ -17,9 +16,6 @@ export default function PostForum() {
 
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        refreshToken();
-    }, [])
 
     function titleOnchange(e) {
         setTitle(e.target.value);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core'
 import Drawer from '@material-ui/core/Drawer'
 import Typography from '@material-ui/core/Typography'
@@ -9,8 +9,9 @@ import CreateIcon from '@mui/icons-material/Create';
 import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 import { useGlobalState } from '../../global/api/ContextProvider';
 import { Device } from '@twilio/voice-sdk';
-import { getUsername, refreshToken } from '../../pages/home/app'
-
+import { getUsername, refreshToken } from '../api/getToken'
+import Cookies from 'universal-cookie';
+import { setCookie } from '../api/cookie';
 const useStyles = makeStyles((theme) => {
     return {
         page: {
@@ -41,6 +42,7 @@ export default function Layout() {
     const navigate = useNavigate()
     const [state, setState] = useGlobalState();
     const { username } = state;
+    const cookies = new Cookies();
 
 
     const menuItems = [
@@ -52,11 +54,12 @@ export default function Layout() {
         {
             text: 'Create post',
             icon: <CreateIcon color="secondary" />,
-            path: '/create-post'
+            path: '/forum/create'
         },
     ];
     useEffect(() => {
         refreshToken();
+        state.twilioToken ? console.log("Yes") : console.log("No");
     }, [])
 
     function handleVoiceClick(e) {
@@ -77,6 +80,7 @@ export default function Layout() {
                         console.log("error: ", device);
                     });
                     setState((state) => {
+                        console.log(twilioToken);
                         return { ...state, device, twilioToken }
                     });
                 }).catch((error) => {
@@ -92,9 +96,11 @@ export default function Layout() {
 
     }
 
-    // const tokenValid = {
-    //     getUsername()
-    // };
+    function handleLogout(e) {
+        setCookie('refreshTok', undefined);
+        setCookie('accessTok', undefined);
+        cookies.set('loginToken', false);
+    }
 
     return (
         <div className={classes.root}>
@@ -129,18 +135,15 @@ export default function Layout() {
                         <ListItemText primary='Voice Room' />
                     </ListItem>
                     <ListItem justify="flex-end">
-                        {
-                            // tokenValid.status === 401 ? <div></div> :
-                            <Link href="/signin" variant="body2">Login again</Link>
-
-                        }
+                        {username ? <Link href="/signin" onClick={handleLogout} variant="body2">Logout</Link> : <Link href="/signin" variant="body2">Login</Link>}
                     </ListItem>
                 </List>
 
 
             </Drawer>
-
+            <Outlet />
             {/* main content */}
         </div >
+
     )
 }

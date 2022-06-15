@@ -6,7 +6,6 @@ import Layout from "../../global/component/Layout";
 const AddThread = () => {
     return (
         <React.Fragment>
-            <Layout />
             <Comment />
         </React.Fragment>
     )

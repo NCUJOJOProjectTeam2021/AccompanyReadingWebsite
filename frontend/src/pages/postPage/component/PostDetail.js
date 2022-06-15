@@ -2,20 +2,24 @@ import React, { useEffect, useState } from 'react'
 import { Avatar, ListItemAvatar, Button, Typography, ListItem, ListItemText, Divider, Grid, Box } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
 import axios from "../../../global/api/Axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Container from '@mui/material/Container';
 
 
 export default function PostDetail(props) {
-    const location = useLocation();
+    //const [searchParams, setSearchParams] = useSearchParams();
+    //const forumID = searchParams.get("id")
+    const { id } = useParams();
+    // const location = useLocation();
     const navigate = useNavigate();
-    const forumID = location.state;
+    // const forumID = props.match.params.id;
     const [data, setData] = useState([]);
     const [thread, setThread] = useState([]);
 
     async function fetchData() {
         try {
-            const response = await axios.get(`api/forum/forum/${forumID}/`);
+            console.log(id);
+            const response = await axios.get(`api/forum/forum/${id}/`);
             let data = await response.data;
             setData(data);
             setThread(data.threads);
@@ -26,7 +30,7 @@ export default function PostDetail(props) {
     }
 
     function handleAddComment(postID) {
-        navigate(`/forum/${postID}/add-comment`, { state: postID });
+        navigate(`/forum/id=${postID}/comment`, { state: postID });
     }
 
     const renderItems = thread.map((data, index) => {
@@ -75,7 +79,7 @@ export default function PostDetail(props) {
     }, [])
 
     return (
-        <Container maxWidth="sm">
+        <Container >
             <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 <ListItem sx={{ top: 30 }} >
                     <ListItemAvatar >

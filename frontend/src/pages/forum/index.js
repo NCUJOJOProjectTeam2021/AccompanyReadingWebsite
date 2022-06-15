@@ -5,7 +5,6 @@ import Layout from '../../global/component/Layout';
 const Forum = () => {
     return (
         <React.Fragment>
-            <Layout />
             <ForumList />
         </React.Fragment>
     )
