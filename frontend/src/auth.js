@@ -12,7 +12,7 @@ async function getUsername() {
 
     const username = await fetch("http://127.0.0.1:8000/auth/username/", requestOptions)
         .then(response => response.text())
-        .then(result => { return JSON.parse(result).username })
+        .then(result => { return JSON.parse(result).user; })
         .catch(error => console.log('error', error));
 
     return username;
