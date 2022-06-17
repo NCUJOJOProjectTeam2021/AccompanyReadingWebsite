@@ -8,7 +8,8 @@ import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CloseIcon from '@mui/icons-material/Close';
-
+import Cookies from 'universal-cookie';
+import { Device } from '@twilio/voice-sdk';
 
 // a room in rooms
 const Item = styled(Paper)(({ theme }) => ({
@@ -40,16 +41,26 @@ const Screen = styled(Paper)(() => ({
 
 
 const Room = ({ room }) => {
+    const cookies = new Cookies();
     const nevigate = useNavigate();
     const [state, setState] = useGlobalState();
     const [call, setCall] = useState();
-    const { device, username } = state;
+    const twilioToken = cookies.get('twilioToken');
+    const username = cookies.get("username");
     const roomName = room.room_name;
     const fetchRooms = useFetchRooms('/api/rooms');
 
-    useEffect(() => {
-        // pass parameters to POST 
-        refreshToken();
+
+    function twilio() {
+        const device = new Device(twilioToken);
+        device.updateOptions(twilioToken, {
+            codecPreferences: ['opus', 'pcmu'],
+            fakeLocalDTMF: true,
+            maxAverageBitrate: 16000
+        });
+        device.on('error', (device) => {
+            console.log("error: ", device);
+        });
         const params = {
             roomName: roomName, participantLabel: username
         };
@@ -61,9 +72,14 @@ const Room = ({ room }) => {
         }
         if (!room.participants.includes(username)) {
             room.participants.push(username);
-            console.log(username);
         }
-    }, [device, roomName, username, room, call]);
+    }
+
+    useEffect(() => {
+        // pass parameters to POST 
+        refreshToken();
+        twilio();
+    }, [roomName, username, room, call]);
 
     const handleLeaveRoom = () => {
         call.disconnect();

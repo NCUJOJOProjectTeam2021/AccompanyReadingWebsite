@@ -33,7 +33,6 @@ export const refreshToken = () => {
     fetch("http://localhost:8000/auth/login/refresh/", requestOptions)
         .then(response => response.text())
         .then((result) => {
-            console.log(result);
             const json = JSON.parse(result);
             setCookie('accessTok', json.access);
             setCookie('refreshTok', json.refresh);

@@ -5,12 +5,16 @@ import Button from '@mui/material/Button';
 import { Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import getTwilioToken from '../../../global/api/getTwilioToken';
+import Cookies from 'universal-cookie';
 
 
 
 const NewRoom = () => {
     const [state, setState] = useGlobalState();
     const navigate = useNavigate();
+    const cookies = new Cookies();
+    const username = cookies.get('username');
     const updateRoomName = (createdRoomTopic) => {
         setState({ ...state, createdRoomTopic });
     };
@@ -23,6 +27,7 @@ const NewRoom = () => {
         const roomId = rooms.push(selectedRoom);
         setState({ ...state, rooms });
         setState({ ...state, selectedRoom });
+        getTwilioToken(username, state.createdRoomTopic);
         navigate(`/roomsList/${roomId}`);
     };
 

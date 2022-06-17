@@ -38,11 +38,6 @@ const RoomList = () => {
                 return { ...state, rooms };
             });
         })
-        getUsername().then((res) => res.json())
-            .then((res) => {
-                setState({ ...state, username: res.user });
-                console.log(res.user);
-            });
         refreshToken();
     }, [fetchRooms, setState]);
 

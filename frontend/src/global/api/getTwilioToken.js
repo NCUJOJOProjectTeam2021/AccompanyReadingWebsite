@@ -1,39 +1,43 @@
-
-import { useGlobalState } from '../../global/api/ContextProvider';
-import { Device } from '@twilio/voice-sdk';
-import { getUsername, refreshToken } from '../api/getToken'
 import Cookies from 'universal-cookie';
-import { useEffect } from 'react';
 
 
-export default function getTwilioToken(username) {
+export default function getTwilioToken(username, roomname) {
     const cookies = new Cookies();
 
-    const setupTwillo = (username) => {
-        fetch(`/api/token/${username}`)
+    const setupTwillo = (username, roomname) => {
+        var formdata = new FormData();
+        const datajson = {
+            "username": username,
+            "roomname": roomname,
+        };
+        formdata.append("username", username);
+        formdata.append("roomname", roomname);
+
+        var requestOptions = {
+            method: 'Post',
+            body: formdata,
+            redirect: 'follow'
+        }
+
+        fetch('http://localhost:8000/api/token', requestOptions)
             .then(response => {
                 return (response.json());
             })
             .then(data => {
                 const twilioToken = data.token;
-                const device = new Device(twilioToken);
-                device.updateOptions(twilioToken, {
-                    codecPreferences: ['opus', 'pcmu'],
-                    fakeLocalDTMF: true,
-                    maxAverageBitrate: 16000
-                });
-                device.on('error', (device) => {
-                    console.log("error: ", device);
-                });
                 // setState((state) => {
                 //     console.log(twilioToken);
                 //     return { ...state, device, twilioToken }
                 // });
+                // localStorage.setItem('device', JSON.stringify(device));
+                // console.log(JSON.parse(localStorage.getItem("device")));
+                // console.log(typeof (device));
                 cookies.set('twilioToken', twilioToken);
+
             }).catch((error) => {
                 console.log(error);
             })
     }
-    setupTwillo(username);
+    setupTwillo();
     //get the access token
 }

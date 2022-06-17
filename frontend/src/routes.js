@@ -12,11 +12,8 @@ import PostPage from './pages/postPage';
 import AddThread from './pages/addThread'
 import WhiteBoardHTML from './pages/whiteBoard/component/WhiteBoardHTML';
 import Page404 from './pages/page404';
-import { getCookie } from './global/api/cookie';
 import ProtectedRoute from './global/component/ProtectedRoute';
-import Blog from './pages/blog';
-import Layout from './global/component/Layout'
-import DashboardLayout from './temp/Layout';
+import DashboardLayout from './global/component/Layout';
 import Cookies from 'universal-cookie';
 
 
@@ -29,9 +26,10 @@ const Routers = () => {
         <Router>
             {/* change the protect way to a pretty way */}
             <Routes>
-                <Route path="/" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+                <Route path="/" element={<Navigate to="/signin" />}></Route>
+                <Route element={<DashboardLayout />}>
                     {/* roomList */}
-                    <Route path='/roomsList' element={cookies.get("twilioToken") ? <ProtectedRoute><RoomList /></ProtectedRoute> : <Navigate to={"/forum"} />} />
+                    <Route path='/roomsList' element={<ProtectedRoute><RoomList /></ProtectedRoute>} />
                     <Route path={'/roomsList/:roomId/whiteboard'} element={<ProtectedRoute><WhiteBoardHTML /></ProtectedRoute>} />
                     <Route path={'/roomsList/:roomId'} element={room ? <ProtectedRoute><Room room={room} /> </ProtectedRoute> : <Navigate to={"/404"} />} />
 
@@ -47,8 +45,6 @@ const Routers = () => {
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/404" element={<Page404 />} />
                 <Route path="*" element={<Navigate replace to="/404" />} />
-
-                <Route path="/test" element={<Blog />} />
             </Routes>
         </Router>
     );

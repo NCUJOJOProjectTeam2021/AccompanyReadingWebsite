@@ -4,7 +4,12 @@ import Cookies from 'universal-cookie';
 
 export default function ProtectedRoute({ children }) {
     const cookies = new Cookies();
-    const auth = cookies.get("loginToken");
+    var auth = cookies.get("loginToken");
+    const username = cookies.get("username");
+    if (username == "undefined") {
+        cookies.set("loginToken", false);
+        auth = cookies.get("loginToken");
+    }
 
     if (!auth) {
         // user is not authenticated

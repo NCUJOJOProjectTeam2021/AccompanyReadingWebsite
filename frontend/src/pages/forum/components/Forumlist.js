@@ -11,10 +11,10 @@ import { Link as RouterLink } from 'react-router-dom';
 // material
 import { Button, Typography, Grid, Container, Stack } from '@mui/material';
 // components
-import Page from '../../../temp/Page';
-import Iconify from '../../../temp/Iconify';
-import { BlogPostCard } from '../../../temp/dashboard';
-import getTwilioToken from '../../../global/api/getTwilioToken';
+import Page from '../../../global/component/Page';
+import Iconify from '../../../global/component/Iconify';
+import BlogPostCard from './BlogPostCard';
+import Cookies from 'universal-cookie';
 // mock
 
 // ----------------------------------------------------------------------
@@ -31,6 +31,7 @@ export default function ForumList() {
     const [data, setData] = useState([]);
     const [state, setState] = useGlobalState();
     const navigate = useNavigate();
+    const cookies = new Cookies();
     async function fetchData() {
         try {
             const response = await Axios.get("api/forum/forum/");
@@ -58,13 +59,14 @@ export default function ForumList() {
                 setState({ ...state, username: res.user });
                 return res.user;
             }).then((username) => {
-                console.log(username);
-                getTwilioToken(username)
+                cookies.set('username', username);
             });
     }, [])
 
+    const username = cookies.get('username');
+
     return (
-        <Page title="Dashboard: Blog">
+        <Page title="Blog">
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
