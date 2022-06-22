@@ -27,6 +27,7 @@
     "react-scripts": "5.0.0",
     "simplebar-react": "^2.4.1",
     "styled-components": "^5.3.3",
+    "twilio-video": "^2.21.3",
     "universal-cookie": "^4.0.4",
     "util": "^0.12.4",
     "web-vitals": "^2.1.4"
