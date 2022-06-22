@@ -76,6 +76,7 @@ export default function RoomCard({ selectedRoom, index }) {
 
   return (
     <Grid item xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
+
       <Card sx={{ position: 'relative' }}>
         <CardMediaStyle
           sx={{

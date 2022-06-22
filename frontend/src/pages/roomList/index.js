@@ -47,10 +47,11 @@ const RoomList = () => {
     return (
         <Page title="Room">
             <Container>
-                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                <Stack direction="row" alignItems="center" justifyContent="space-evenly" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        Discussion room
+                        Voice_room
                     </Typography>
+                    <NewRoom />
                 </Stack>
 
                 <Grid container spacing={3}>
@@ -58,7 +59,19 @@ const RoomList = () => {
                         rooms.length > 0 ?
                             rooms.map((selectedRoom, index) => (
                                 <RoomCard key={index + 1} selectedRoom={selectedRoom} index={index} />
-                            )) : <NewRoom />
+                            )) :
+                            <Stack direction="column" alignItems="center" justifyContent="space-between" mb={5}>
+                                <Typography variant="h4" gutterBottom>
+                                    Sorry,There is no room available.
+                                </Typography>
+
+                                <Box
+                                    component="img"
+                                    alt="The house from the offer."
+                                    src="/static/illustrations/Sorry.svg"
+                                    sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
+                                />
+                            </Stack>
                     }
                 </Grid>
             </Container>
