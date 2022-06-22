@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import NewRoom from './component/NewRoom';
 import { useGlobalState } from '../../global/api/ContextProvider';
 import { useFetchRooms } from '../../global/api/Hook';
+
+import { refreshToken } from '../../global/api/getToken';
 // material
 import { styled, Stack, Paper, Container, Box, Grid, Typography } from '@mui/material';
 // components
-import Page from '../../global/component/Page';
-import RoomCard from './component/RoomCard';
+import Page from '../../../global/component/Page';
+import RoomCard from './component/BlogPostCard';
 
 
 
@@ -30,22 +32,22 @@ const SubItem = styled(Paper)(({ theme }) => ({
 const RoomList = () => {
     const [state, setState] = useGlobalState();
     const fetchRooms = useFetchRooms('/api/rooms');
-    const [rooms, setRooms] = useState([])
+    var rooms;
     // const { twilioToken, username } = state;
 
 
 
     useEffect(() => {
-        fetchRooms().then(rooms => {
+        rooms = fetchRooms().then(rooms => {
             setState((state) => {
                 return { ...state, rooms };
             });
-            setRooms(rooms);
+            return rooms;
         })
-        console.log(rooms.length);
+        console.log(rooms);
     }, [fetchRooms, setState]);
     return (
-        <Page title="Room">
+        <Page title="Blog">
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
@@ -54,15 +56,11 @@ const RoomList = () => {
                 </Stack>
 
                 <Grid container spacing={3}>
-                    {
-                        rooms.length > 0 ?
-                            rooms.map((selectedRoom, index) => (
-                                <RoomCard key={index + 1} selectedRoom={selectedRoom} index={index} />
-                            )) : <NewRoom />
-                    }
+                    {rooms.map((room, index) => (
+                        <RoomCard key={index + 1} room={room} index={index} />
+                    ))}
                 </Grid>
             </Container>
         </Page>
     )
 };
-export default RoomList;

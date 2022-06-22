@@ -10,9 +10,6 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CloseIcon from '@mui/icons-material/Close';
 import Cookies from 'universal-cookie';
 import { Device } from '@twilio/voice-sdk';
-import NewWindow from 'react-new-window'
-import { ScreenSharing } from '../screenshare/App';
-
 
 // a room in rooms
 const Item = styled(Paper)(({ theme }) => ({
@@ -156,8 +153,7 @@ const Room = ({ room }) => {
                 <Grid item xs={8} >
                     <ScreenContainer>
                         <Stack sx={{ height: '90%' }} justifyContent="center" alignItems="center">
-                            {/* <Screen></Screen> */}
-                            <ScreenSharing />
+                            <Screen></Screen>
                         </Stack>
                         <Stack alignItems="flex-end">
                             <Box padding="0 3%">

@@ -44,11 +44,11 @@ export default function ForumList() {
         }
     }
 
-    async function handlePostDelete(forumID) {
-        console.log(forumID);
-        await Axios.delete('api/forum/forum/' + forumID + '/');
-        fetchData();
-    }
+    // async function handlePostDelete(forumID) {
+    //     console.log(forumID);
+    //     await Axios.delete('api/forum/forum/' + forumID + '/');
+    //     fetchData();
+    // }
 
     useEffect(() => {
         fetchData();

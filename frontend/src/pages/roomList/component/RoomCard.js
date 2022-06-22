@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Link, Card, Grid, Avatar, Typography, CardContent } from '@mui/material';
+import { Box, Link, Card, Grid, Avatar, Typography, CardContent, Button } from '@mui/material';
 // utils
-import { fDate } from '../../../global/api/formatTime'
 import PersonIcon from '@mui/icons-material/Person';
 //
+import getTwilioToken from '../../../global/api/getTwilioToken';
 import SvgIconStyle from '../../../global/component/SvgIconStyle';
+import Cookies from 'universal-cookie';
+import { useGlobalState } from '../../../global/api/ContextProvider';
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +18,7 @@ const CardMediaStyle = styled('div')({
   paddingTop: 'calc(100% * 3 / 4)',
 });
 
-const TitleStyle = styled(Link)({
+const TitleStyle = styled(Button)({
   height: 44,
   overflow: 'hidden',
   WebkitLineClamp: 2,
@@ -44,16 +46,32 @@ const CoverImgStyle = styled('img')({
 
 // ----------------------------------------------------------------------
 
-BlogPostCard.propTypes = {
-  post: PropTypes.object.isRequired,
+RoomCard.propTypes = {
+  selectedRoom: PropTypes.object.isRequired,
   index: PropTypes.number,
 };
 
-export default function BlogPostCard({ post, index }) {
-  const { Post_title, threads, Post_author, Post_created_date, id } = post;
+export default function RoomCard({ selectedRoom, index }) {
+  const cookies = new Cookies()
+  const [state, setState] = useGlobalState();
+  const { room_name, participants, sid } = selectedRoom;
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
   const cover = `/static/blog_pic/random_${Math.ceil(Math.random() * 30)}.jpg`
+  const username = cookies.get('username');
+  const navigate = useNavigate();
+
+  function handleRoomEnter() {
+
+    console.log(state.selectedRoom);
+    getTwilioToken(username, selectedRoom.room_name);
+    const res = new Promise((resolve, reject) => {
+      resolve(setState({ ...state, selectedRoom }))
+    }).then(
+      navigate(`/roomsList/${index + 1}`)
+    )
+
+  }
 
 
   return (
@@ -94,7 +112,7 @@ export default function BlogPostCard({ post, index }) {
             }}
           />
           <AvatarStyle
-            alt={<PersonIcon />}
+
             sx={{
               ...((latestPostLarge || latestPost) && {
                 zIndex: 9,
@@ -105,7 +123,7 @@ export default function BlogPostCard({ post, index }) {
               }),
             }}
           />
-          <CoverImgStyle alt={Post_title} src={cover} />
+          <CoverImgStyle alt={room_name} src={cover} />
         </CardMediaStyle>
 
         <CardContent
@@ -119,15 +137,14 @@ export default function BlogPostCard({ post, index }) {
           }}
         >
           <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
-            {fDate(Post_created_date)}
+            {participants.length}
           </Typography>
 
           <TitleStyle
-            to={"/forum/" + id}
+            onClick={handleRoomEnter}
             color="inherit"
             variant="subtitle2"
             underline="hover"
-            component={RouterLink}
             sx={{
               ...(latestPostLarge && { typography: 'h5', height: 60 }),
               ...((latestPostLarge || latestPost) && {
@@ -135,7 +152,7 @@ export default function BlogPostCard({ post, index }) {
               }),
             }}
           >
-            {Post_title}
+            {room_name}
           </TitleStyle>
 
           {/* <InfoStyle>

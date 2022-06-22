@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import RoomList from './pages/roomList';
 import Room from './pages/room/Room';
@@ -14,14 +14,11 @@ import WhiteBoardHTML from './pages/whiteBoard/component/WhiteBoardHTML';
 import Page404 from './pages/page404';
 import ProtectedRoute from './global/component/ProtectedRoute';
 import DashboardLayout from './global/component/Layout';
-import Cookies from 'universal-cookie';
 
 
 const Routers = () => {
-    const [state, setState] = useGlobalState();
+    const [state] = useGlobalState();
     const room = state.selectedRoom;
-    const [login, setLogin] = useState(false);
-    const cookies = new Cookies;
     return (
         <Router>
             {/* change the protect way to a pretty way */}
@@ -31,7 +28,7 @@ const Routers = () => {
                     {/* roomList */}
                     <Route path='/roomsList' element={<ProtectedRoute><RoomList /></ProtectedRoute>} />
                     <Route path={'/roomsList/:roomId/whiteboard'} element={<ProtectedRoute><WhiteBoardHTML /></ProtectedRoute>} />
-                    <Route path={'/roomsList/:roomId'} element={room ? <ProtectedRoute><Room room={room} /> </ProtectedRoute> : <Navigate to={"/404"} />} />
+                    <Route path={'/roomsList/:roomId'} element={<ProtectedRoute><Room room={room} /> </ProtectedRoute>} />
 
                     {/* forum */}
                     <Route path="/forum/:id/comment" element={<ProtectedRoute><AddThread /></ProtectedRoute>} />
