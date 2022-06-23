@@ -12,6 +12,8 @@ import Cookies from 'universal-cookie';
 import { Device } from '@twilio/voice-sdk';
 import ReactRoundedImage from "react-rounded-image";
 import MyPhoto from "./avatar.svg";
+import {ScreenSharing} from '../screenshare/App'
+
 // a room in rooms
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#fff',
@@ -90,7 +92,6 @@ const Room = ({ room }) => {
 
     useEffect(() => {
         // pass parameters to POST 
-        refreshToken();
         twilio();
     }, [roomName, username, room, call]);
 
@@ -183,7 +184,8 @@ const Room = ({ room }) => {
                 <Grid item xs={6} >
                     <ScreenContainer>
                         <Stack sx={{ height: '90%' }} justifyContent="flex-start" alignItems="flex-start">
-                            <Screen></Screen>
+                            {/* <Screen></Screen> */}
+                            {/* <ScreenSharing/> */}
                         </Stack>
                         <Stack alignItems="flex-start" width="50vw">
                             <Grid container spacing={0} >

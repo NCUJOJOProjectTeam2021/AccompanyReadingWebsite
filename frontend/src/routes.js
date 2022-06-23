@@ -14,6 +14,7 @@ import WhiteBoardHTML from './pages/whiteBoard/component/WhiteBoardHTML';
 import Page404 from './pages/page404';
 import ProtectedRoute from './global/component/ProtectedRoute';
 import DashboardLayout from './global/component/Layout';
+import { ScreenSharing } from './pages/screenshare/App';
 
 
 const Routers = () => {
@@ -38,6 +39,7 @@ const Routers = () => {
 
                     {/* other */}
                 </Route>
+                <Route path="/screenshare" element={<ScreenSharing/>}/>
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/404" element={<Page404 />} />

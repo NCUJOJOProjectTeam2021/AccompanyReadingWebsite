@@ -3,12 +3,24 @@ import { connect } from 'twilio-video';
 import { getUsername, refresh } from '../../auth';
 import { createScreenTrack } from './scripts/CreateScreenTrack';
 import { getRoomCredentials } from './scripts/GetRoomCredential';
+import Cookies from 'universal-cookie';
 import './style.css'
 
 const ScreenSharing = () => {
     const [screenTrack, setScreenTrack] = useState('');
     const [token, setToken] = useState('');
     const [room, setRoom] = useState(null);
+    
+    //get token
+    // const cookies = new Cookies();
+    // const video_token = cookies.get('twilioToken');
+    // const room = await connect(video_token, {
+    //     tracks: []
+    // });
+    //get room
+    
+    
+    //set room
 
     //get token
     const getToken = async () => {
