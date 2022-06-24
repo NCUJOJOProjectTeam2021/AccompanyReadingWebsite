@@ -5,45 +5,23 @@ import { createScreenTrack } from './scripts/CreateScreenTrack';
 import { getRoomCredentials } from './scripts/GetRoomCredential';
 import Cookies from 'universal-cookie';
 import './style.css'
+import { RoomOutlined } from '@mui/icons-material';
 
 const ScreenSharing = () => {
-    const [screenTrack, setScreenTrack] = useState('');
-    const [token, setToken] = useState('');
-    const [room, setRoom] = useState(null);
-    
+
     //get token
-    // const cookies = new Cookies();
-    // const video_token = cookies.get('twilioToken');
-    // const room = await connect(video_token, {
-    //     tracks: []
-    // });
     //get room
-    
-    
-    //set room
+    var localscreentrack = null;
+    const cookies = new Cookies();
+    const token = cookies.get('twilioToken');
+    const [room, setroom] = useState(null);
 
-    //get token
-    const getToken = async () => {
-        const username = await getUsername();
-        const json = await getRoomCredentials(username);
-        const data = JSON.parse(json);
-        setToken(data.token);
-    };
-
-    useEffect(() => {
-        refresh();
-        if (!token) {
-            getToken();
-        }
-    });
-
-    //set room
-    const getRoom = async () => {
+    const getroom = async () => {
         const room = await connect(token, {
             tracks: []
         });
-        console.log(`successfully joined a room: ${room}`);
         const localParticipant = room.localParticipant;
+        console.log(`successfully joined a room: ${room.name}`);
         console.log(`connect to the room as localparticipant ${localParticipant.identity}`);
 
         room.on('participantConnected', participant => {
@@ -52,36 +30,40 @@ const ScreenSharing = () => {
             participant.tracks.forEach(publication => {
                 if (publication.isSubscribed) {
                     const track = publication.track;
-                    // document.getElementById('remoteshare').appendChild(track.attach());
-                    /*Todo: 重寫成attach到screenpreview*/
                     const screen = document.getElementById('screenpreview');
                     track.attach(screen);
                 }
             });
 
             participant.on('trackSubscribed', track => {
+                console.log('someone shared');
                 // document.getElementById('remoteshare').appendChild(track.attach());
                 /*Todo: 重寫成attach到screenpreview*/
+                /*Disattach 本地的東西 */
                 const screen = document.getElementById('screenpreview');
                 track.attach(screen);
+                if (localscreentrack) {
+                    handleStop();
+                }
             });
+
+            participant.on('trackUnsubscribed', (track, publication) => {
+                console.log(`someone unpublished.`);
+            })
 
         });
 
         room.on('participantDisconnected', participant => {
             console.log(`a remote participant disconnect: ${participant.identity}`);
         });
-
-        setRoom(room);
+        
+        setroom(room);
     }
 
-    useEffect(() => {
-        if (token) {
-            getRoom();
-        }
-    }, [token]);
+    if(room == null) {
+        getroom();
+    }
 
-    //subscribe already in room video
     useEffect(() => {
         if (room) {
             room.participants.forEach(participant => {
@@ -101,57 +83,43 @@ const ScreenSharing = () => {
                     /*Disattach 本地的東西 */
                     const screen = document.getElementById('screenpreview');
                     track.attach(screen);
-
-                    if (screenTrack) {
+                    if (localscreentrack) {
                         handleStop();
                     }
                 });
+
+                participant.on('trackUnsubscribed', (track, publication) => {
+                    console.log(`${publication.identity} unpublished.`);
+                })
             });
         }
     }, [room])
 
-    //hang the status to someone publish the track
+    
+    
 
+    //set room
 
-    //attach the screen and publish
-    useEffect(() => {
-        if (screenTrack) {
-            try {
-                const screenPreview = document.getElementById('screenpreview');
-                screenTrack.attach(screenPreview);
-                room.localParticipant.publishTrack(screenTrack);
-                console.log('publish the track successfully');
-            } catch (e) {
-                console.log(e.message);
-            }
-        }
-    }, [screenTrack]);
+    //subscribe already in room video
 
 
     //handle button
     const handleCapture = async () => {
         try {
-            setScreenTrack(await createScreenTrack(720, 1280));
+            localscreentrack = await createScreenTrack(360, 640);
+            const screenPreview = document.getElementById('screenpreview');
+            localscreentrack.attach(screenPreview);
+            room.localParticipant.publishTrack(localscreentrack);
+            console.log('publish the track successfully');
         } catch (e) {
             alert(e.message);
         }
     };
 
     const handleStop = () => {
-        screenTrack.stop();
-        room.localParticipant.unpublishTrack(screenTrack);
-        setScreenTrack(null);
-    }
-
-    const handleDisconnect = () => {
-        if (room) {
-            if (screenTrack) {
-                handleStop();
-            }
-            room.disconnect();
-            setRoom(null);
-            console.log('disconnected');
-        }
+        localscreentrack.stop();
+        room.localParticipant.unpublishTrack(localscreentrack);
+        localscreentrack = null;
     }
 
 
@@ -162,9 +130,7 @@ const ScreenSharing = () => {
                 <video className="screen" id="screenpreview" autoPlay />
                 <button id="capture" onClick={handleCapture}>start capture</button>
                 <button id="stopcapture" onClick={handleStop}>stop capture</button>
-                <button id="disconnect" onClick={handleDisconnect}>disconnect</button>
             </div>
-            <div id="remoteshare"></div>
         </div>
     );
 };

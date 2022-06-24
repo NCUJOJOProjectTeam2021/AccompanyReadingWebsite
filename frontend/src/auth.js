@@ -1,4 +1,7 @@
+import Cookies from "universal-cookie";
 import { setCookie, getCookie } from "./cookie";
+
+const cookies = new Cookies
 
 async function getUsername() {
     var myHeaders = new Headers();
@@ -20,8 +23,8 @@ async function getUsername() {
 
 function refresh() {
     var formdata = new FormData();
-    formdata.append("refresh", getCookie('refresh'));
-
+    formdata.append("refresh", cookies.get('refreshTok'));
+    // console.log(getCookie('refresh'));
     var requestOptions = {
         method: 'POST',
         body: formdata,
@@ -32,8 +35,10 @@ function refresh() {
         .then(response => response.text())
         .then((result) => {
             const json = JSON.parse(result);
-            setCookie('access', json.access);
-            setCookie('refresh', json.refresh);
+            cookies.set('accessTok', json.access);
+            cookies.set('refreshTok', json.refresh);
+            // setCookie('access', json.access);
+            // setCookie('refresh', json.refresh);
         })
         .catch((error) => {
             console.log('error', error);

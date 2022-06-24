@@ -185,7 +185,7 @@ const Room = ({ room }) => {
                     <ScreenContainer>
                         <Stack sx={{ height: '90%' }} justifyContent="flex-start" alignItems="flex-start">
                             {/* <Screen></Screen> */}
-                            {/* <ScreenSharing/> */}
+                            <ScreenSharing/>
                         </Stack>
                         <Stack alignItems="flex-start" width="50vw">
                             <Grid container spacing={0} >

@@ -38,6 +38,6 @@ export default function getTwilioToken(username, roomname) {
                 console.log(error);
             })
     }
-    setupTwillo();
+    setupTwillo(username, roomname);
     //get the access token
 }
