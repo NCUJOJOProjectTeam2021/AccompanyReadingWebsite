@@ -13,7 +13,7 @@ import Scrollbar from './Scrollbar'
 import NavSection from './NavSection';
 //
 import navConfig from './NavConfig';
-
+import Cookies from 'universal-cookie';
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;
@@ -45,7 +45,7 @@ DashboardSidebar.propTypes = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
   const isDesktop = useResponsive('up', 'lg');
-
+  const cookies = new Cookies();
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();
@@ -70,10 +70,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                pekora
+                {cookies.get('username')}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                HI
+                Welcome
               </Typography>
             </Box>
           </AccountStyle>
