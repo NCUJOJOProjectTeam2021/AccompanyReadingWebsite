@@ -10,11 +10,28 @@ import { RoomOutlined } from '@mui/icons-material';
 const ScreenSharing = () => {
 
     //get token
+<<<<<<< Updated upstream
     //get room
     var localscreentrack = null;
     const cookies = new Cookies();
     const token = cookies.get('twilioToken');
     const [room, setroom] = useState(null);
+=======
+    const getToken = async () => {
+        const username = await getUsername();
+        const json = await getRoomCredentials(username);
+        const data = JSON.parse(json);
+        setToken(data.token);
+    };
+
+
+    useEffect(() => {
+        refresh();
+        if (!token) {
+            getToken();
+        }
+    });
+>>>>>>> Stashed changes
 
     const getroom = async () => {
         const room = await connect(token, {
