@@ -6,6 +6,7 @@ export const useFetchRooms = (url) => {
             fetch(url)
                 .then(response => response.json())
                 .then((data) => {
+                    console.log(data.rooms);
                     resolve(data.rooms);
                 })
                 .catch((error) => {

@@ -15,6 +15,7 @@ import Page404 from './pages/page404';
 import ProtectedRoute from './global/component/ProtectedRoute';
 import DashboardLayout from './global/component/Layout';
 import { ScreenSharing } from './pages/screenshare/App';
+import VideoChat from './pages/newroom/App';
 
 
 const Routers = () => {
@@ -38,8 +39,9 @@ const Routers = () => {
                     <Route path="/forum" element={<ProtectedRoute><Forum /></ProtectedRoute>} />
 
                     {/* other */}
+                    <Route path="/newroom" element={<VideoChat />} />
                 </Route>
-                <Route path="/screenshare" element={<ScreenSharing/>}/>
+                <Route path="/screenshare" element={<ScreenSharing />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/404" element={<Page404 />} />

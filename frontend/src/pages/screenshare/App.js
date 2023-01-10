@@ -15,20 +15,7 @@ const ScreenSharing = () => {
     const cookies = new Cookies();
     const token = cookies.get('twilioToken');
     const [room, setroom] = useState(null);
-    const getToken = async () => {
-        const username = await getUsername();
-        const json = await getRoomCredentials(username);
-        const data = JSON.parse(json);
-        setToken(data.token);
-    };
 
-
-    useEffect(() => {
-        refresh();
-        if (!token) {
-            getToken();
-        }
-    });
 
     const getroom = async () => {
         const room = await connect(token, {

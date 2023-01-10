@@ -16,6 +16,11 @@ const navConfig = [
     path: '/roomsList',
     icon: getIcon('eva:people-fill'),
   },
+  {
+    title: 'Room Remaking',
+    path: '/newroom',
+    icon: getIcon('eva:message-square-outline'),
+  },
   // {
   //   title: 'login',
   //   path: '/login',
