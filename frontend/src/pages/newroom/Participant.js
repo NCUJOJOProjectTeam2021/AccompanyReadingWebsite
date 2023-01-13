@@ -1,11 +1,25 @@
 import { useEffect, useRef, useState } from "react";
+import { Card, CardMedia, Typography } from '@mui/material';
 
+const Video = ({ track }) => {
+    const ref = useRef();
+
+    console.log(track);
+
+    useEffect(() => {
+        track.attach(ref.current);
+        return () => {
+            track.detach();
+        }
+    });
+
+    return <CardMedia component="video" ref={ref} autoPlay={true} />;
+};
 
 const Participant = ({ participant }) => {
     const [videoTracks, setVideoTracks] = useState([]);
     const [audioTracks, setAudioTracks] = useState([]);
 
-    const videoRef = useRef();
     const audioRef = useRef();
 
     const trackpubsToTracks = trackMap => Array.from(trackMap.values())
@@ -43,22 +57,16 @@ const Participant = ({ participant }) => {
 
     }, [participant]);
 
-    useEffect(() => {
-        const videoTrack = videoTracks[0];
-        if (videoTrack) {
-            videoTrack.attach(videoRef.current);
-            return () => {
-                videoTrack.detach();
-            }
-        }
-    }, [videoTracks]);
+    console.log(videoTracks);
 
     return (
-        <div className="participant">
-            <h3>{participant.identity}</h3>
-            <video ref={videoRef} autoPlay={true} />
+        <Card className="participant" sx={{ width: 1 / 2, bgcolor: "black", margin: 1 }}>
+            {videoTracks.map(track => (<Video key={track.id} track={track} />))}
             <audio ref={audioRef} autoPlay={true} muted={true} />
-        </div>
+            <Typography variant="h4" color="white" component="div" sx={{ margin: 0.8 }}>
+                {participant.identity}
+            </Typography>
+        </Card>
     );
 
 };

@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Video from 'twilio-video';
 import Participant from './Participant';
+import { Button, Grid, Typography } from '@mui/material';
+import { createScreenTrack } from '../screenshare/scripts/CreateScreenTrack';
 
 const Room = ({ roomname, token, handleLeave }) => {
     const [room, setRoom] = useState(null);
@@ -40,14 +42,25 @@ const Room = ({ roomname, token, handleLeave }) => {
         };
     }, [roomname, token]);
 
+    const handleScreenShare = useCallback(async event => {
+        event.preventDefault();
+        const track = await createScreenTrack(360, 640);
+        console.log('screen track status:');
+        console.log(track);
+        room.localParticipant.publishTrack(track);
+    });
+
     const remoteParticipants = participants.map(participant => (
         <Participant key={participant.sid} participant={participant} />
     ));
 
     return (
         <div className='room'>
-            <h2>{roomname}</h2>
-            <button onClick={handleLeave}>logout</button>
+            <Typography variant="h3" color="inherit" component="div">
+                {roomname}
+            </Typography>
+            <Button onClick={handleLeave} variant="contained" color="error">Leave</Button>
+            <Button onClick={handleScreenShare} variant="outlined">Share Screen</Button>
             <div className='local-participant'>
                 {room ? (
                     <Participant
@@ -59,7 +72,7 @@ const Room = ({ roomname, token, handleLeave }) => {
                 )}
             </div>
             <h3>Remote Paritcipants</h3>
-            <div className='remote-participants'>{remoteParticipants}</div>
+            <Grid container className='remote-participants'>{remoteParticipants}</Grid>
         </div>
     );
 };

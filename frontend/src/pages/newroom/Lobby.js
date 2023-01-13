@@ -1,4 +1,5 @@
 import React from "react";
+import { TextField, Grid, Button } from '@mui/material';
 
 const Lobby = ({
     username,
@@ -8,31 +9,42 @@ const Lobby = ({
     handleSubmit
 }) => {
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Enter a room</h2>
-            <div>
-                <label htmlFor="name">Name:</label>
-                <input
+        <Grid container justifyContent="center">
+            <form onSubmit={handleSubmit}>
+                <h2>Enter a room</h2>
+                <TextField
+                    variant="outlined"
+                    label="User name"
+                    size="small"
+                    margin="dense"
                     type="text"
                     id="field"
                     value={username}
                     onChange={handleUsernameChange}
                     required
                 />
-            </div>
-
-            <div>
-                <label htmlFor="room">Room name:</label>
-                <input
+                <br />
+                <TextField
+                    variant="outlined"
+                    label="Room name"
+                    size="small"
+                    margin="dense"
                     type="text"
                     id="room"
                     value={roomname}
                     onChange={handleRoomnameChange}
                     required
                 />
-            </div>
-            <button type="submit">Submit</button>
-        </form>
+                <br />
+                <Button
+                    type="submit"
+                    variant="contained"
+                    size="small"
+                >
+                    Submit
+                </Button>
+            </form>
+        </Grid>
     );
 };
 
